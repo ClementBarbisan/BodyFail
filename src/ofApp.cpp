@@ -16,16 +16,22 @@ void ofApp::setup(){
 	kinect.initBodyIndexSource();
 	shader.load("shaders_gl3/bodyIndex.vert", "shaders_gl3/bodyIndex.frag", "shaders_gl3/bodyIndex.geom");
 	raytracing.load("shaders_gl3/raytracer.vert", "shaders_gl3/raytracer.frag");
-	largeFont.load("backFont.ttf", 12, false, false);
+	//largeFont.load("backFont.ttf", 12, false, false);
 	//largeFont.setLineHeight(14.0f);
-	//font.setup("backFont.ttf");
-	//font.setSize(12);
+	font.setup();
+	font.addFont("backFont", "backFont.ttf");
+	ofxFontStash2::Style style;
+	style.color = ofColor::white;
+	style.fontID = "backFont";
+	style.fontSize = 12;
+	font.addStyle("backFontStyle", style);
+	font.setDefaultStyle("backFontStyle");
 	soundStream.setup(this, 2, 0, 44100, 512, 4);
 	//pipeline.load("pipeline_data.grt"); //The MLP algorithm directly supports multi-dimensional outputs, so MDRegression is not required here
 	buffer = new float[75];
 	for (int i = 0; i < 75; i++)
 		buffer[i] = 1;
-	ofSetFullscreen(true);
+	//ofSetFullscreen(true);
 	ofHideCursor();
 	ofSetColor(255);
 	ofBackground(0);
@@ -94,19 +100,19 @@ void ofApp::draw()
 			{
 				buffer[i] = sin(TWO_PI);
 			}
-			for (int i = 0; i < 50; i++)
+			for (int i = 0; i < 75; i++)
 			{
 				if ((i + errorIndex) % 2 == 0)
-					ss << "..yrteR" << endl;
+					font.drawFormatted("..yrteR", 200, 10 * i + 10);
 				else
-					ss << "detpurroc eroC : tluaF noitatnemgeS" << endl;
+					font.drawFormatted("detpurroc eroC : tluaF noitatnemgeS", 200, 10 * i + 10);
 			}
 			errorIndex++;
 			if (errorIndex == 50)
 				errorIndex = 0;
 			ofSetWindowTitle(ofToString(ofGetFrameRate(), 2));
-			largeFont.drawString(ss.str(), 10, 20);
-			//font.drawString(ss.str(), 200, 20);
+			//largeFont.drawString(ss.str(), 10, 20);
+			
 
 			//ofDrawBitmapString(ss.str(), 200, 20);
 		ofPushMatrix();
@@ -136,6 +142,9 @@ void ofApp::draw()
 	ofScale(100, 100, 100);
 	ofRotateY(180);
 	//framebuffer[framebufferIndex].begin();
+	ofMesh mesh = kinect.getDepthSource()->getMesh(false, ofxKFW2::Source::Depth::PointCloudOptions::ColorCamera);
+	ofVbo vboMesh;
+	mesh.drawWireframe();
 	shader.begin();
 	ofTexture & texture = kinect.getBodyIndexSource()->getTexture();
 	//shader.setUniform3f("LightPosition_worldspace", ofVec3f(10.0, 10.0, -10.0));
@@ -145,7 +154,6 @@ void ofApp::draw()
 	shader.setUniform1f("time", ofGetElapsedTimef());
 	shader.setUniformTexture("uColorTex", kinect.getColorSource()->getTexture(), 2);
 	shader.setUniform1f("lookalike", lookalike);
-	ofMesh mesh = kinect.getDepthSource()->getMesh(false, ofxKFW2::Source::Depth::PointCloudOptions::ColorCamera);
 	mesh.draw();
 	shader.end();
 	//framebuffer[framebufferIndex].end();
@@ -181,7 +189,7 @@ void ofApp::draw()
 			for (auto joint : body.joints)
 			{
 				stringstream stream;
-				stream << joint.first << " " << joint.second.getPosition() << endl;
+				stream << joint.first << " " << joint.second.getPosition();
 				if (index <= 25)
 				{
 					coordinates[49 + index] = stream.str();
@@ -198,11 +206,11 @@ void ofApp::draw()
 	}
 	for (int i = 0; i < 75; i++)
 	{
-		ss << coordinates[i];
+		font.drawFormatted(coordinates[i], 200, 10 * i + 10);
 	}
 	ofSetWindowTitle(ofToString(ofGetFrameRate(), 2));
-	largeFont.drawString(ss.str(), 10, 20);
-	//font.draw(ss.str(), 12, 0, 0);
+	//largeFont.drawString(ss.str(), 10, 20);
+	
 	//ofDrawBitmapString(ss.str(), 200, 20);
 	//ofEnableDepthTest();
 	/*framebuffer[0].end();

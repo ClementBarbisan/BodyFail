@@ -1,2 +1,1 @@
-ofxFontStash
-ofxGrt
+ofxFontStash2

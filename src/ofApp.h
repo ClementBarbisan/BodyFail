@@ -4,8 +4,8 @@
 
 #include "ofMain.h"
 #include "ofxKinectForWindows2.h"
-#include "ofxGrt.h"
-#include "ofxFontStash.h"
+//#include "ofxGrt.h"
+#include "ofxFontStash2.h"
 
 
 class ofApp : public ofBaseApp{
@@ -32,12 +32,12 @@ class ofApp : public ofBaseApp{
 		ofEasyCam cam;
 		ofShader shader;
 		ofShader raytracing;
-		ofTrueTypeFont largeFont;
+		//ofTrueTypeFont largeFont;
 		vector<string> coordinates = vector<string>(75);
 		//float timeToUpdate = 0;
-		RegressionData trainingData;      		//This will store our training data
-		GestureRecognitionPipeline pipeline;        //This is a wrapper for our regression and any pre/post processing modules 
-		GRT::VectorFloat predictVector;
+		//RegressionData trainingData;      		//This will store our training data
+		//GestureRecognitionPipeline pipeline;        //This is a wrapper for our regression and any pre/post processing modules 
+		//GRT::VectorFloat predictVector;
 		ofSoundStream soundStream;
 		float* buffer;
 		vector<float> bufferStorage = vector<float>(75);
@@ -51,5 +51,5 @@ class ofApp : public ofBaseApp{
 		float lookalike = 0.75f;
 		float initialLookalikeTarget = 0.75f;
 		float initialLookalike = 0.75f;
-		ofxFontStash font;
+		ofxFontStash2::Fonts font;
 };
