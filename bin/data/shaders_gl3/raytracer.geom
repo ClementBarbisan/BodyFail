@@ -1,9 +1,13 @@
 #version 150 core
-layout(points) in;
+layout(lines) in;
 layout(line_strip, max_vertices=2) out;
 
 uniform float time;
+uniform float lookalike;
+uniform mat4 projectionMatrix;
+uniform mat4 modelViewMatrix;
 uniform mat4 modelViewProjectionMatrix;
+out vec4 Position_worldspace;
 
 in Vertex
 {
@@ -20,14 +24,16 @@ float rand(float x, float y){
 
 void main()
 {
-	vKeep = vertex[0].vKeep;
+	vKeep = vertex[0].vKeep == 1.0 ? vertex[1].vKeep : 0.0;
+	vec4 pos = vec4((rand(gl_in[0].gl_Position.x, time)) / (20.0 * lookalike), (rand(gl_in[0].gl_Position.y, time)) / (20.0 * lookalike), (rand(gl_in[0].gl_Position.z, time)) / (20.0 * lookalike), 1.0);
+	Position_worldspace = modelViewMatrix * (gl_in[0].gl_Position + pos);
 	vTexCoord = vertex[0].vTexCoord;
-	vec4 dir = vec4(rand(gl_in[0].gl_Position.x, time) * 15.0f, rand(gl_in[0].gl_Position.y, time) * 15.0f, gl_in[0].gl_Position.z, 1.0);
-	gl_Position = modelViewProjectionMatrix * (gl_in[0].gl_Position + dir);
+	gl_Position = modelViewProjectionMatrix * (gl_in[0].gl_Position + pos);
 	EmitVertex();
-	//gl_Position = vertex[0].fragPos;
-	//EmitVertex();
-	gl_Position = modelViewProjectionMatrix * (gl_in[0].gl_Position - dir);
+	pos = vec4((rand(gl_in[0].gl_Position.x, time)) / (20.0 * lookalike), (rand(gl_in[0].gl_Position.y, time)) / (20.0 * lookalike), (rand(gl_in[0].gl_Position.z, time)) / (20.0 * lookalike), 1.0);
+	Position_worldspace = modelViewMatrix * (gl_in[0].gl_Position + pos);
+	vTexCoord = vertex[1].vTexCoord;
+	gl_Position = modelViewProjectionMatrix * (gl_in[1].gl_Position + pos);
 	EmitVertex();
 	EndPrimitive();
 }

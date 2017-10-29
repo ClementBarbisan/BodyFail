@@ -47,7 +47,7 @@ void main()
 
 	float ndcDepth = (gl_FragCoord.z - gl_DepthRange.near - gl_DepthRange.far) / (gl_DepthRange.far - gl_DepthRange.near);
 	vec4 rgb = texture(depthTex, vTexCoord);
-	vFragColor = texture(uColorTex, vTexCoord) *
+	vFragColor =
 		vec4(1.0 - clamp(smoothstep(0, 1, pow(ndcDepth, 0.9)), 0, 1)) * 
 		vec4(1.0 - clamp(smoothstep(0, 1, pow(rgb.r, 0.9)), 0, 1), 1.0 - clamp(smoothstep(0, 1, pow(rgb.g, 0.9)), 0, 1), 1.0 - clamp(smoothstep(0, 1, pow(rgb.b, 0.9)), 0, 1), 1.0)
 		* LightColor * LightPower * cosTheta / (distance * 3.0) +

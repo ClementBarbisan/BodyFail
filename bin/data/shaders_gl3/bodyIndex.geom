@@ -24,7 +24,6 @@ float rand(float x, float y){
   return fract(sin(dot(vec2(x, y) ,vec2(12.9898,78.233))) * 43758.5453);
 }
 
-
 vec3 vertices[12];
 
 void polygon(int i1, int i2, int i3)

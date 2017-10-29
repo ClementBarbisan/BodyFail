@@ -15,9 +15,10 @@ void ofApp::setup(){
 	kinect.initBodySource();
 	kinect.initBodyIndexSource();
 	shader.load("shaders_gl3/bodyIndex.vert", "shaders_gl3/bodyIndex.frag", "shaders_gl3/bodyIndex.geom");
-	raytracing.load("shaders_gl3/raytracer.vert", "shaders_gl3/raytracer.frag");
+	raytracing.load("shaders_gl3/raytracer.vert", "shaders_gl3/raytracer.frag", "shaders_gl3/raytracer.geom");
 	//largeFont.load("backFont.ttf", 12, false, false);
 	//largeFont.setLineHeight(14.0f);
+	rng = default_random_engine{};
 	font.setup();
 	font.addFont("backFont", "backFont.ttf");
 	ofxFontStash2::Style style;
@@ -86,7 +87,9 @@ void ofApp::update(){
 //	
 //	
 //}
-
+int clip(int n, int lower, int upper) {
+	return std::max(lower, std::min(n, upper));
+}
 //--------------------------------------------------------------
 void ofApp::draw()
 {
@@ -143,16 +146,31 @@ void ofApp::draw()
 	ofRotateY(180);
 	//framebuffer[framebufferIndex].begin();
 	ofMesh mesh = kinect.getDepthSource()->getMesh(false, ofxKFW2::Source::Depth::PointCloudOptions::ColorCamera);
-	ofVbo vboMesh;
-	mesh.drawWireframe();
-	shader.begin();
+	ofMesh meshWireframe = kinect.getDepthSource()->getMesh(true, ofxKFW2::Source::Depth::PointCloudOptions::ColorCamera);
 	ofTexture & texture = kinect.getBodyIndexSource()->getTexture();
+	ofTexture & colorTexture = kinect.getColorSource()->getTexture();
+	ofTexture & depthTexture = kinect.getDepthSource()->getTexture();
+	//meshWireframe.addIndices(meshWireframe.getIndices());
+	shuffle(meshWireframe.getIndices().begin(), meshWireframe.getIndices().end(), rng);
+	//rotate(meshWireframe.getIndices().begin(), meshWireframe.getIndices().begin() + rand() % (clip(meshWireframe.getIndices().size() / 100, 1, 5000)), meshWireframe.getIndices().end());
+	meshWireframe.setMode(OF_PRIMITIVE_LINES);
+	raytracing.begin();
+	
+	raytracing.setUniform1i("uWidth", kinect.getBodyIndexSource()->getWidth());
+	raytracing.setUniformTexture("uBodyIndexTex", texture, 1);
+	shader.setUniform1f("time", ofGetElapsedTimef());
+	raytracing.setUniformTexture("uColorTex", colorTexture, 2);
+	shader.setUniformTexture("depthTex", depthTexture, 3);
+	raytracing.setUniform1f("lookalike", lookalike);
+	meshWireframe.drawWireframe();
+	raytracing.end();
+	shader.begin();
 	//shader.setUniform3f("LightPosition_worldspace", ofVec3f(10.0, 10.0, -10.0));
 	shader.setUniform1i("uWidth", kinect.getBodyIndexSource()->getWidth());
 	shader.setUniformTexture("uBodyIndexTex", texture, 1);
-	shader.setUniformTexture("depthTex", kinect.getDepthSource()->getTexture(), 3);
+	shader.setUniformTexture("depthTex", depthTexture, 3);
 	shader.setUniform1f("time", ofGetElapsedTimef());
-	shader.setUniformTexture("uColorTex", kinect.getColorSource()->getTexture(), 2);
+	shader.setUniformTexture("uColorTex", colorTexture, 2);
 	shader.setUniform1f("lookalike", lookalike);
 	mesh.draw();
 	shader.end();
