@@ -54,4 +54,5 @@ class ofApp : public ofBaseApp{
 		float initialLookalike = 1.0f;
 		ofxFontStash2::Fonts font;
 		default_random_engine rng;
+		bool savedPosture = false;
 };

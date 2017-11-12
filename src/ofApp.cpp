@@ -97,6 +97,30 @@ void ofApp::draw()
 	stringstream ss;
 	if (lookalike <= 0.01)
 	{
+		if (!savedPosture)
+		{
+			savedPosture = true;
+			auto bodies = kinect.getBodySource()->getBodies();
+			int index = 0;
+			for (auto body : bodies) {
+				if (body.joints.size() == 25)
+				{
+					stringstream url;
+					url << "http://127.0.0.1:8080/addSample?";
+					for (auto joint : body.joints) 
+					{
+						if (index < 24)
+							url << "n" << index << "x=" << joint.second.getPosition().x << "&n" << index << "y=" << joint.second.getPosition().y << "&n" << index << "z=" << joint.second.getPosition().z << "&";
+						else
+							url << "n" << index << "x=" << joint.second.getPosition().x << "&n" << index << "y=" << joint.second.getPosition().y << "&n" << index << "z=" << joint.second.getPosition().z;
+						//ofLog() << joint.first << " " << joint.second.getPosition();
+						//now do something with the joints
+						index++;
+					}
+					ofLoadURL(url.str());
+				}
+			}
+		}
 		ofSetColor(255);
 			maxBuffer = 1;
 			for (int i = 0; i < 75; i++)
@@ -134,6 +158,7 @@ void ofApp::draw()
 		
 		return;
 	}
+	savedPosture = false;
 	//ofBackgroundGradient(ofColor(50), ofColor::black, OF_GRADIENT_BAR);
 	//framebufferIndex = framebufferIndex % 2;
 	/*ofSetColor(0);
