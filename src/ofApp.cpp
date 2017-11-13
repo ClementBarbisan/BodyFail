@@ -175,9 +175,13 @@ void ofApp::draw()
 	ofTexture & texture = kinect.getBodyIndexSource()->getTexture();
 	ofTexture & colorTexture = kinect.getColorSource()->getTexture();
 	ofTexture & depthTexture = kinect.getDepthSource()->getTexture();
-	//meshWireframe.addIndices(meshWireframe.getIndices());
-	shuffle(meshWireframe.getIndices().begin(), meshWireframe.getIndices().end(), rng);
-	//rotate(meshWireframe.getIndices().begin(), meshWireframe.getIndices().begin() + rand() % (clip(meshWireframe.getIndices().size() / 100, 1, 5000)), meshWireframe.getIndices().end());
+	vector<size_t> & indices = meshWireframe.getIndices();
+	//shuffle(meshWireframe.getIndices().begin(), meshWireframe.getIndices().end(), rng);
+	for (int i = 0; i < indices.size() / 2; i++)
+	{
+		int random = rand() % (indices.size() / 2) + indices.size() / 2;
+		swap(indices[i], indices[random]);
+	}
 	meshWireframe.setMode(OF_PRIMITIVE_LINES);
 	raytracing.begin();
 	
