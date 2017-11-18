@@ -33,7 +33,6 @@ class ofApp : public ofBaseApp{
 		ofEasyCam cam;
 		ofShader shader;
 		ofShader raytracing;
-		//ofTrueTypeFont largeFont;
 		vector<string> coordinates = vector<string>(75);
 		//float timeToUpdate = 0;
 		//RegressionData trainingData;      		//This will store our training data
@@ -45,9 +44,7 @@ class ofApp : public ofBaseApp{
 		int errorIndex = 0;
 		float maxBuffer = 0;
 		string lookalikeString = "1.0";
-		//ofFbo framebuffer[2];
-		//int framebufferIndex = 0;
-		//ofFbo framebufferEnd[2];
+		ofFbo framebuffer;
 		float lookalikeTarget = 1.0f;
 		float lookalike = 1.0f;
 		float initialLookalikeTarget = 1.0f;

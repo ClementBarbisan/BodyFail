@@ -32,7 +32,9 @@ void main()
 	vec2 idxTexCoord = vec2(gl_VertexID % uWidth, gl_VertexID / uWidth);
 	vec4 idxColor = texture(uBodyIndexTex, idxTexCoord);
 
-	if (idxColor.r == 1.0 || gl_VertexID % int(5 / int(clamp(5 * (1.0 - lookalike), 1, 5))) != 0) {
+	if (idxColor.r == 1.0)
+//	|| gl_VertexID % int(5 / int(clamp(5 * (1.0 - lookalike), 1, 5))) != 0) 
+	{
 		vertex.vKeep = 0.0;
 	}
 	else {

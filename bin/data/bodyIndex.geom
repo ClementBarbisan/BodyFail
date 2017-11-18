@@ -23,7 +23,7 @@ uniform float time;
 float rand(float x, float y){
   return fract(sin(dot(vec2(x, y) ,vec2(12.9898,78.233))) * 43758.5453);
 }
-
+/*
 vec3 vertices[12];
 
 void polygon(int i1, int i2, int i3)
@@ -93,9 +93,9 @@ void main()
 	polygon(9,10,5);
 	polygon(10,6,1);
 }
+*/
 
-
-/*void main()
+void main()
 {
 	vKeep = vertex[0].vKeep;
 	if (vKeep == 0)
@@ -103,24 +103,14 @@ void main()
 	// Position of the vertex, in worldspace : M * position
 	Position_worldspace = modelViewMatrix * gl_in[0].gl_Position;
 	
-	// Vector that goes from the vertex to the camera, in camera space.
-	// In camera space, the camera is at the origin (0,0,0).
-	vec4 vertexPosition_cameraspace = modelViewMatrix * gl_in[0].gl_Position;
-	EyeDirection_cameraspace = vec4(0) - vertexPosition_cameraspace;
-
-	// Vector that goes from the vertex to the light, in camera space. M is ommited because it's identity.
-	vec4 LightPosition_cameraspace = modelViewMatrix * vec4(-1, 1, 0, 1);
-	LightDirection_cameraspace = LightPosition_cameraspace + EyeDirection_cameraspace;
-	
-	
-	zPos = sqrt(( modelViewProjectionMatrix * gl_in[0].gl_Position).z) / 20.0;
-	vec4 pos = vec4((rand(gl_in[0].gl_Position.x, time)) / (20.0 * lookalike), (rand(gl_in[0].gl_Position.y, time)) / (20.0 * lookalike), (rand(gl_in[0].gl_Position.z, time)) / (20.0 * lookalike), 1.0);
+	//zPos = sqrt(( modelViewProjectionMatrix * gl_in[0].gl_Position).z) / 20.0;
+	vec4 pos = vec4((rand(gl_in[0].gl_Position.x, time)) / (30.0 * lookalike), (rand(gl_in[0].gl_Position.y, time)) / (30.0 * lookalike), (rand(gl_in[0].gl_Position.z, time)) / (30.0 * lookalike), 1.0);
 	vec4 zRand = vec4(((-1.0 + rand((gl_in[0].gl_Position+vec4(size,size / 2,size / 2,0.0)).x, time)) / 10.0) * (1.0 - lookalike),((-1.0 + rand((gl_in[0].gl_Position+vec4(size,size / 2,size / 2,0.0)).y, time)) / 10.0) * (1.0 - lookalike),((-1 + rand((gl_in[0].gl_Position+vec4(size,size / 2,size / 2,0.0)).z, time)) / 10.0) * (1.0 - lookalike),1.0);
 	vec4 normalExp = vec4(0.0);
 	size = clamp((rand(float(gl_PrimitiveIDIn), time) / 100.0f) * (1.0 - lookalike), 0.002, 1.0);
 	vTexCoord = vertex[0].vTexCoord;
 	//left
-	light = vec3(1.0);
+	//light = vec3(1.0);
 	// Normal of the the vertex, in camera space
 	vec3 vertexNormal_modelspace = -normalize(cross(vec3(size,-size / 2,-size / 2) - (vec3(size,size / 2,size / 2) + zRand.xyz), vec3(0.0,-size,0.0) - (vec3(size,size / 2,size / 2) + zRand.xyz)));
 	Normal_cameraspace = (modelViewMatrix * vec4(vertexNormal_modelspace, 1.0));
@@ -198,4 +188,4 @@ void main()
 	gl_Position = modelViewProjectionMatrix * (gl_in[0].gl_Position+vec4(0.0,-size,0.0,0.0) + pos + normalExp);
 	EmitVertex();
 	EndPrimitive();
-}*/
+}
