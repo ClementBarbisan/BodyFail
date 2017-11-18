@@ -116,28 +116,29 @@ void ofApp::draw()
 				}
 			}
 		}
-			maxBuffer = 1;
-			for (int i = 0; i < 75; i++)
-			{
-				buffer[i] = sin(PI);
-			}
-			for (int i = 0; i < 75; i++)
-			{
-				if ((i + errorIndex) % 2 == 0)
-					font.drawFormatted("..yrteR", 200, 10 * i + 10);
-				else
-					font.drawFormatted("detpurroc eroC : tluaF noitatnemgeS", 200, 10 * i + 10);
-			}
-			errorIndex++;
-			if (errorIndex == 50)
-				errorIndex = 0;
-			ofSetWindowTitle(ofToString(ofGetFrameRate(), 2));
+		maxBuffer = 1;
+		for (int i = 0; i < 75; i++)
+		{
+			buffer[i] = sin(PI);
+		}
+		
+		ofSetWindowTitle(ofToString(ofGetFrameRate(), 2));
 		ofPushMatrix();
 		ofTranslate(ofGetWidth() / 2, ofGetHeight() / 2);
 		ofRotateY(180);
 		ofTranslate(-ofGetWidth() / 2, -ofGetHeight() / 2);
-		kinect.getBodySource()->drawProjected(0, 0, ofGetWidth(), ofGetHeight());
+		kinect.getBodySource()->drawProjected(0, 0, ofGetWidth(), ofGetHeight(), ofxKinectForWindows2::ColorCamera);
 		ofPopMatrix();
+		for (int i = 0; i < 75; i++)
+		{
+			if ((i + errorIndex) % 2 == 0)
+				font.drawFormatted("..yrteR", 200, 10 * i + 10);
+			else
+				font.drawFormatted("detpurroc eroC : tluaF noitatnemgeS", 200, 10 * i + 10);
+		}
+		errorIndex++;
+		if (errorIndex == 50)
+			errorIndex = 0;
 		return;
 	}
 	savedPosture = false;
