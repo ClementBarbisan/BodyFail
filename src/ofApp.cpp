@@ -30,13 +30,13 @@ void ofApp::setup(){
 	buffer = new float[75];
 	for (int i = 0; i < 75; i++)
 		buffer[i] = 1;
-	//ofSetFullscreen(true);
+	ofSetFullscreen(true);
 	ofHideCursor();
 	ofSetColor(255);
 	ofBackground(0);
 	initialLookalike = lookalike;
 	initialLookalikeTarget = lookalikeTarget;
-	framebuffer.allocate(1024, 768);
+	framebuffer.allocate(1400, 1050);
 }
 
 //--------------------------------------------------------------
@@ -190,7 +190,7 @@ void ofApp::draw()
 	framebuffer.begin();
 	ofFill();
 	ofSetColor(0, 0, 0, 20 + 60 * lookalike);
-	ofDrawRectangle(0, 0, 1024, 768);
+	ofDrawRectangle(0, 0, 1400, 1050);
 	framebuffer.end();
 	rotate(coordinates.begin(), coordinates.begin() + 50, coordinates.end());
 	maxBuffer = 0;

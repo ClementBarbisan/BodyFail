@@ -7,8 +7,8 @@ int main(){
 #ifdef USE_PROGRAMMABLE_PIPELINE
 	ofGLFWWindowSettings settings;
 	settings.setGLVersion(4, 3);
-	settings.width = 1024;
-	settings.height = 768;
+	settings.width = 1400;
+	settings.height = 1050;
 	//settings.monitor = 2;
 	//settings.multiMonitorFullScreen = true;
 	//settings.windowMode = OF_WINDOW;
