@@ -1,5 +1,7 @@
 #version 150
 
+const vec3 LumCoeff = vec3 (0.2125, 0.7154, 0.0721);
+
 uniform sampler2DRect uColorTex;
 uniform sampler2DRect depthTex;
 uniform int uWidth;
@@ -50,6 +52,11 @@ void main()
 	vFragColor =
 		vec4(ndcDepth) 
 		// * vec4(1.0 - rgb.r * 1000, 1.0 - rgb.r * 1000, 1.0 - rgb.r * 1000, 1.0)
-		* LightColor * LightPower / (distance * 3.0) +
-		MaterialSpecularColor * LightColor * LightPower * pow(cosAlpha,5) / (distance * 3.0);
+		* LightColor * LightPower / (distance * 2.5) +
+		MaterialSpecularColor * LightColor * LightPower * pow(cosAlpha,5) / (distance * 2.5);
+		
+    vec3 intensity     = vec3 (dot(vFragColor.rgb, LumCoeff));
+    vec3 color         = mix(intensity, vFragColor.rgb, vec3(1.0));
+    color              = mix(vec3(0.62), color, vec3(3));
+    vFragColor       = vec4 (color, 1.0);
 }

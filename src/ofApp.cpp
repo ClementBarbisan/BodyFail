@@ -189,7 +189,7 @@ void ofApp::draw()
 	framebuffer.draw(0, 0);
 	framebuffer.begin();
 	ofFill();
-	ofSetColor(0, 0, 0, 40 + 115 * lookalike);
+	ofSetColor(0, 0, 0, 20 + 60 * lookalike);
 	ofDrawRectangle(0, 0, 1024, 768);
 	framebuffer.end();
 	rotate(coordinates.begin(), coordinates.begin() + 50, coordinates.end());
