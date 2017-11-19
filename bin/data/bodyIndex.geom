@@ -46,7 +46,7 @@ void main()
 		return;
 	//zPos = sqrt(( modelViewProjectionMatrix * gl_in[0].gl_Position).z) / 20.0;
 	size = clamp((rand(float(gl_PrimitiveIDIn), time) / 100.0f) * (1.0 - lookalike), 0.002, 1.0);
-	vec4 pos = vec4((rand(gl_in[0].gl_Position.x, time)) / (20.0 * lookalike), (rand(gl_in[0].gl_Position.y, time)) / (20.0 * lookalike), (rand(gl_in[0].gl_Position.z, time)) / (20.0 * lookalike), 1.0);
+	vec4 pos = vec4((-0.5 + rand(gl_in[0].gl_Position.x, time)) / (30.0 * lookalike), (-0.5 + rand(gl_in[0].gl_Position.y, time)) / (30.0 * lookalike), (-0.5 + rand(gl_in[0].gl_Position.z, time)) / (30.0 * lookalike), 1.0);
 	vec4 zRand = vec4(((-1.0 + rand((gl_in[0].gl_Position+vec4(size,size / 2,size / 2,0.0)).x, time)) / 10.0) * (1.0 - lookalike),((-1.0 + rand((gl_in[0].gl_Position+vec4(size,size / 2,size / 2,0.0)).y, time)) / 10.0) * (1.0 - lookalike),((-1 + rand((gl_in[0].gl_Position+vec4(size,size / 2,size / 2,0.0)).z, time)) / 10.0) * (1.0 - lookalike),1.0);
 	// Position of the vertex, in worldspace : M * position
 	Position_worldspace = modelViewMatrix * (gl_in[0].gl_Position + pos);
