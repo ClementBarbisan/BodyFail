@@ -30,7 +30,7 @@ void main()
 	vTexCoord = vertex[0].vTexCoord;
 	gl_Position = modelViewProjectionMatrix * (gl_in[0].gl_Position + pos);
 	EmitVertex();
-	pos = vec4((rand(gl_in[0].gl_Position.x, time)) / (20.0 * lookalike), (rand(gl_in[0].gl_Position.y, time)) / (20.0 * lookalike), (rand(gl_in[0].gl_Position.z, time)) / (20.0 * lookalike), 1.0);
+	pos = vec4((-0.5 + rand(gl_in[0].gl_Position.x, time)) / (30.0 * lookalike), (-0.5 + rand(gl_in[0].gl_Position.y, time)) / (30.0 * lookalike), ( -0.5 + rand(gl_in[0].gl_Position.z, time)) / (30.0 * lookalike), 1.0);
 	Position_worldspace = modelViewMatrix * (gl_in[0].gl_Position + pos);
 	vTexCoord = vertex[1].vTexCoord;
 	gl_Position = modelViewProjectionMatrix * (gl_in[1].gl_Position + pos);

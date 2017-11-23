@@ -1,1 +1,3 @@
+ofxOsc
+ofxFontStash
 ofxFontStash2

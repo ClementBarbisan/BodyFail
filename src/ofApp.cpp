@@ -17,20 +17,22 @@ void ofApp::setup(){
 	shader.load("bodyIndex.vert", "bodyIndex.frag", "bodyIndex.geom");
 	raytracing.load("raytracer.vert", "raytracer.frag", "raytracer.geom");
 	rng = default_random_engine{};
-	font.setup();
-	font.addFont("backFont", "backFont.ttf");
-	ofxFontStash2::Style style;
-	style.color = ofColor::white;
-	style.fontID = "backFont";
-	style.fontSize = 12;
-	font.addStyle("backFontStyle", style);
-	font.setDefaultStyle("backFontStyle");
+	//font.setup();
+	//font.addFont("backFont", "backFont.ttf");
+	trueTypeFont.loadFont("backFont.ttf", 12);
+	//ofxFontStash2::Style style;
+	//style.color = ofColor::white;
+	//style.fontID = "backFont";
+	//style.fontSize = 12;
+	//font.addStyle("backFontStyle", style);
+	//font.setDefaultStyle("backFontStyle");
 	soundStream.setup(this, 2, 0, 44100, 512, 4);
+	oscReceiver.setup(8532);
 	//pipeline.load("pipeline_data.grt"); //The MLP algorithm directly supports multi-dimensional outputs, so MDRegression is not required here
 	buffer = new float[75];
 	for (int i = 0; i < 75; i++)
 		buffer[i] = 1;
-	ofSetFullscreen(true);
+	//ofSetFullscreen(true);
 	ofHideCursor();
 	ofSetColor(255);
 	ofBackground(0);
@@ -49,6 +51,14 @@ void ofApp::update(){
 			lookalike += 0.001;
 		else
 			lookalike -= 0.001;
+	}
+	while (oscReceiver.hasWaitingMessages())
+	{
+		oscReceiver.getNextMessage(oscMessage);
+		if (oscMessage.getArgTypeName(0) == "f")
+			lookalike = 1.0 - oscMessage.getArgAsFloat(0);
+		//lookalike = 1.0 -;
+		ofLog() << lookalike;
 	}
 	//if (kinect.isFrameNew() && timeToUpdate >= 0.25f && pipeline.getTrained())
 	//{
@@ -132,9 +142,11 @@ void ofApp::draw()
 		for (int i = 0; i < 75; i++)
 		{
 			if ((i + errorIndex) % 2 == 0)
-				font.drawFormatted("..yrteR", 200, 10 * i + 10);
+				//font.drawFormatted("..yrteR", 200, 10 * i + 10);
+				trueTypeFont.drawString("..yrteR", 200, 10 * i + 10);
 			else
-				font.drawFormatted("detpurroc eroC : tluaF noitatnemgeS", 200, 10 * i + 10);
+				//font.drawFormatted("detpurroc eroC : tluaF noitatnemgeS", 200, 10 * i + 10);
+				trueTypeFont.drawString("detpurroc eroC : tluaF noitatnemgeS", 200, 10 * i + 10);
 		}
 		errorIndex++;
 		if (errorIndex == 50)
@@ -220,7 +232,8 @@ void ofApp::draw()
 	}
 	for (int i = 0; i < 75; i++)
 	{
-		font.drawFormatted(coordinates[i], 200, 10 * i + 10);
+		//font.drawFormatted(coordinates[i], 200, 10 * i + 10);
+		trueTypeFont.drawString(coordinates[i], 200, 10 * i + 10);
 	}
 	ofSetWindowTitle(ofToString(ofGetFrameRate(), 2));
 }

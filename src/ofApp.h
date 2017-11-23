@@ -4,8 +4,8 @@
 
 #include "ofMain.h"
 #include "ofxKinectForWindows2.h"
-//#include "ofxGrt.h"
 #include "ofxFontStash2.h"
+#include "ofxOsc.h"
 #include <random>
 #include <algorithm>
 
@@ -49,7 +49,10 @@ class ofApp : public ofBaseApp{
 		float lookalike = 1.0f;
 		float initialLookalikeTarget = 1.0f;
 		float initialLookalike = 1.0f;
-		ofxFontStash2::Fonts font;
+		ofxOscReceiver oscReceiver;
+		ofxOscMessage oscMessage;
 		default_random_engine rng;
+		ofxFontStash2::Fonts font;
+		ofTrueTypeFont trueTypeFont;
 		bool savedPosture = false;
 };

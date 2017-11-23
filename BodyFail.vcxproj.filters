@@ -13,6 +13,42 @@
     <ClCompile Include="src\ofApp.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscBundle.cpp">
+      <Filter>addons\ofxOsc\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscMessage.cpp">
+      <Filter>addons\ofxOsc\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscParameterSync.cpp">
+      <Filter>addons\ofxOsc\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscReceiver.cpp">
+      <Filter>addons\ofxOsc\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscSender.cpp">
+      <Filter>addons\ofxOsc\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\IpEndpointName.cpp">
+      <Filter>addons\ofxOsc\libs\oscpack\src\ip</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\win32\NetworkingUtils.cpp">
+      <Filter>addons\ofxOsc\libs\oscpack\src\ip\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\win32\UdpSocket.cpp">
+      <Filter>addons\ofxOsc\libs\oscpack\src\ip\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscOutboundPacketStream.cpp">
+      <Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscPrintReceivedElements.cpp">
+      <Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscReceivedElements.cpp">
+      <Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscTypes.cpp">
+      <Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\addons\ofxFontStash2\src\ofxFontStash2.cpp">
       <Filter>addons\ofxFontStash2\src</Filter>
     </ClCompile>
@@ -25,6 +61,15 @@
     <ClCompile Include="..\..\..\addons\ofxFontStash2\libs\pugixml\src\pugixml.cpp">
       <Filter>addons\ofxFontStash2\libs\pugixml\src</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxFontStash\src\ofxFontStash.cpp">
+      <Filter>addons\ofxFontStash\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxFontStash\libs\fontstash\src\fontstash.c">
+      <Filter>addons\ofxFontStash\libs\fontstash\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxFontStash\libs\fontstash\src\stb_truetype.c">
+      <Filter>addons\ofxFontStash\libs\fontstash\src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -33,29 +78,68 @@
     <Filter Include="addons">
       <UniqueIdentifier>{71834F65-F3A9-211E-73B8-DC85}</UniqueIdentifier>
     </Filter>
+    <Filter Include="addons\ofxOsc">
+      <UniqueIdentifier>{D91DCA33-6E5D-4481-2AEC-9FBB}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxOsc\src">
+      <UniqueIdentifier>{B9DD339A-D93D-92A1-0A2F-4B41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxOsc\libs">
+      <UniqueIdentifier>{99ECA1D9-873F-4622-8FC0-FC7B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxOsc\libs\oscpack">
+      <UniqueIdentifier>{D3A98534-1602-4FEF-57A6-6593}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxOsc\libs\oscpack\src">
+      <UniqueIdentifier>{BFB5BB47-98C8-BBCB-3066-1046}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxOsc\libs\oscpack\src\ip">
+      <UniqueIdentifier>{5A029128-EB41-95C5-CBC0-CDED}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxOsc\libs\oscpack\src\ip\win32">
+      <UniqueIdentifier>{79DFDFE2-400B-8654-3675-01A3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxOsc\libs\oscpack\src\osc">
+      <UniqueIdentifier>{EDACB89C-9768-9551-4D41-B590}</UniqueIdentifier>
+    </Filter>
     <Filter Include="addons\ofxFontStash2">
-      <UniqueIdentifier>{04916304-d629-4c82-83cb-d33ed5846028}</UniqueIdentifier>
+      <UniqueIdentifier>{1cf878b9-4d29-4a75-9c4c-ec6bb96c8b72}</UniqueIdentifier>
     </Filter>
     <Filter Include="addons\ofxFontStash2\src">
-      <UniqueIdentifier>{2d07247a-83b2-404a-8964-31c716b3d754}</UniqueIdentifier>
+      <UniqueIdentifier>{2a15702a-5601-4399-b815-818c99598d87}</UniqueIdentifier>
     </Filter>
     <Filter Include="addons\ofxFontStash2\libs">
-      <UniqueIdentifier>{18a6f74c-66b8-4323-ab83-c67299d76fc5}</UniqueIdentifier>
+      <UniqueIdentifier>{2eab70ed-f027-40ad-bff8-133ce7440489}</UniqueIdentifier>
     </Filter>
     <Filter Include="addons\ofxFontStash2\libs\nanoVG">
-      <UniqueIdentifier>{bbc8b456-847a-41e1-af4c-a909a94627d8}</UniqueIdentifier>
+      <UniqueIdentifier>{cfa0a439-e311-44ba-ac20-e0c26abac9d0}</UniqueIdentifier>
     </Filter>
     <Filter Include="addons\ofxFontStash2\libs\nanoVG\obsolete">
-      <UniqueIdentifier>{898461d1-b07d-42bf-a5c2-b547ea27f6b8}</UniqueIdentifier>
+      <UniqueIdentifier>{07ca98f9-14b3-44ee-9b92-6156232e206f}</UniqueIdentifier>
     </Filter>
     <Filter Include="addons\ofxFontStash2\libs\nanoVG\src">
-      <UniqueIdentifier>{5eff2757-367f-40ef-88d4-1551372c31a2}</UniqueIdentifier>
+      <UniqueIdentifier>{77dbab6d-eb42-41b0-9527-ab9bd1f29600}</UniqueIdentifier>
     </Filter>
     <Filter Include="addons\ofxFontStash2\libs\pugixml">
-      <UniqueIdentifier>{c9418798-504d-48c6-8e94-bbab99018839}</UniqueIdentifier>
+      <UniqueIdentifier>{9895efb0-eaca-420b-842e-99b97371bdff}</UniqueIdentifier>
     </Filter>
     <Filter Include="addons\ofxFontStash2\libs\pugixml\src">
-      <UniqueIdentifier>{e469e53a-7a04-48de-942c-0f947a850b86}</UniqueIdentifier>
+      <UniqueIdentifier>{fdf97666-698c-4520-acdc-c12b6432f6fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxFontStash">
+      <UniqueIdentifier>{66e5f447-a169-43d4-bf5f-5edccde54e73}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxFontStash\src">
+      <UniqueIdentifier>{688e836d-65bc-41a5-9c29-c2b45eb9651e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxFontStash\libs">
+      <UniqueIdentifier>{21d60921-4236-41b0-a3c5-bf89f8580852}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxFontStash\libs\fontstash">
+      <UniqueIdentifier>{7cfc55e7-7093-4bff-ba4e-a0cb03170dc5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxFontStash\libs\fontstash\src">
+      <UniqueIdentifier>{402ba5db-9d0d-4f74-be36-213b25aad637}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -64,6 +148,66 @@
     </ClInclude>
     <ClInclude Include="src\ofApp.h">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOsc.h">
+      <Filter>addons\ofxOsc\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscArg.h">
+      <Filter>addons\ofxOsc\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscBundle.h">
+      <Filter>addons\ofxOsc\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscMessage.h">
+      <Filter>addons\ofxOsc\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscParameterSync.h">
+      <Filter>addons\ofxOsc\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscReceiver.h">
+      <Filter>addons\ofxOsc\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscSender.h">
+      <Filter>addons\ofxOsc\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\IpEndpointName.h">
+      <Filter>addons\ofxOsc\libs\oscpack\src\ip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\NetworkingUtils.h">
+      <Filter>addons\ofxOsc\libs\oscpack\src\ip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\PacketListener.h">
+      <Filter>addons\ofxOsc\libs\oscpack\src\ip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\TimerListener.h">
+      <Filter>addons\ofxOsc\libs\oscpack\src\ip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\UdpSocket.h">
+      <Filter>addons\ofxOsc\libs\oscpack\src\ip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\MessageMappingOscPacketListener.h">
+      <Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscException.h">
+      <Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscHostEndianness.h">
+      <Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscOutboundPacketStream.h">
+      <Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscPacketListener.h">
+      <Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscPrintReceivedElements.h">
+      <Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscReceivedElements.h">
+      <Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscTypes.h">
+      <Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\addons\ofxFontStash2\src\ofxFontStash2.h">
       <Filter>addons\ofxFontStash2\src</Filter>
@@ -103,6 +247,15 @@
     </ClInclude>
     <ClInclude Include="..\..\..\addons\ofxFontStash2\libs\pugixml\src\pugixml.hpp">
       <Filter>addons\ofxFontStash2\libs\pugixml\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxFontStash\src\ofxFontStash.h">
+      <Filter>addons\ofxFontStash\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxFontStash\libs\fontstash\src\fontstash.h">
+      <Filter>addons\ofxFontStash\libs\fontstash\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxFontStash\libs\fontstash\src\stb_truetype.h">
+      <Filter>addons\ofxFontStash\libs\fontstash\src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -96,20 +96,15 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <PreprocessorDefinitions>NANOVG_GL3_IMPLEMENTATION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);
-..\..\..\addons\ofxFontStash\libs;
-..\..\..\addons\ofxFontStash\libs\fontstash;
-..\..\..\addons\ofxFontStash\libs\fontstash\src;
-..\..\..\addons\ofxFontStash\src;
-..\..\..\addons\ofxGrt\src;
-..\..\..\addons\ofxGrt\libs\grt;
-D:\of_v0.9.8_vs_release\addons\ofxFontStash2\src;
-D:\of_v0.9.8_vs_release\addons\ofxFontStash2\libs\nanoVG\src;
-D:\of_v0.9.8_vs_release\addons\ofxFontStash2\libs\pugixml\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\..\..\addons\ofxFontStash2\libs;..\..\..\addons\ofxFontStash2\libs\nanoVG;..\..\..\addons\ofxFontStash2\libs\nanoVG\obsolete;..\..\..\addons\ofxFontStash2\libs\nanoVG\src;..\..\..\addons\ofxFontStash2\libs\pugixml;..\..\..\addons\ofxFontStash2\libs\pugixml\src;..\..\..\addons\ofxFontStash2\src;..\..\..\addons\ofxOsc\libs;..\..\..\addons\ofxOsc\libs\oscpack;..\..\..\addons\ofxOsc\libs\oscpack\src;..\..\..\addons\ofxOsc\libs\oscpack\src\ip;..\..\..\addons\ofxOsc\libs\oscpack\src\ip\posix;..\..\..\addons\ofxOsc\libs\oscpack\src\ip\win32;..\..\..\addons\ofxOsc\libs\oscpack\src\osc;..\..\..\addons\ofxOsc\src;D:\of_v0.9.8_vs_release\addons\ofxFontStash2\src;D:\of_v0.9.8_vs_release\addons\ofxFontStash2\libs\nanoVG\src;D:\of_v0.9.8_vs_release\addons\ofxFontStash2\libs\pugixml\src;
+D:\of_v0.9.8_vs_release\addons\ofxFontStash\src;
+D:\of_v0.9.8_vs_release\addons\ofxFontStash\libs\fontstash\src;
+libs/fontstash/src</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
+      <AdditionalOptions>-DNANOVG_GL2_IMPLEMENTATION</AdditionalOptions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -128,6 +123,11 @@ D:\of_v0.9.8_vs_release\addons\ofxFontStash2\libs\pugixml\src</AdditionalInclude
       <WarningLevel>Level3</WarningLevel>
       <CompileAs>CompileAsCpp</CompileAs>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalOptions>-DNANOVG_GL2_IMPLEMENTATION</AdditionalOptions>
+      <AdditionalIncludeDirectories>D:\of_v0.9.8_vs_release\addons\ofxFontStash2\src;D:\of_v0.9.8_vs_release\addons\ofxFontStash2\libs\nanoVG\src;D:\of_v0.9.8_vs_release\addons\ofxFontStash2\libs\pugixml\src;
+D:\of_v0.9.8_vs_release\addons\ofxFontStash\src;
+D:\of_v0.9.8_vs_release\addons\ofxFontStash\libs\fontstash\src;
+libs/fontstash/src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -140,21 +140,16 @@ D:\of_v0.9.8_vs_release\addons\ofxFontStash2\libs\pugixml\src</AdditionalInclude
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WholeProgramOptimization>false</WholeProgramOptimization>
-      <PreprocessorDefinitions>NANOVG_GL3_IMPLEMENTATION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);
-..\..\..\addons\ofxFontStash\libs;
-..\..\..\addons\ofxFontStash\libs\fontstash;
-..\..\..\addons\ofxFontStash\libs\fontstash\src;
-..\..\..\addons\ofxFontStash\src;
-..\..\..\addons\ofxGrt\src;
-..\..\..\addons\ofxGrt\libs\grt;
-D:\of_v0.9.8_vs_release\addons\ofxFontStash2\src;
-D:\of_v0.9.8_vs_release\addons\ofxFontStash2\libs\nanoVG\src;
-D:\of_v0.9.8_vs_release\addons\ofxFontStash2\libs\pugixml\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\..\..\addons\ofxFontStash2\libs;..\..\..\addons\ofxFontStash2\libs\nanoVG;..\..\..\addons\ofxFontStash2\libs\nanoVG\obsolete;..\..\..\addons\ofxFontStash2\libs\nanoVG\src;..\..\..\addons\ofxFontStash2\libs\pugixml;..\..\..\addons\ofxFontStash2\libs\pugixml\src;..\..\..\addons\ofxFontStash2\src;..\..\..\addons\ofxOsc\libs;..\..\..\addons\ofxOsc\libs\oscpack;..\..\..\addons\ofxOsc\libs\oscpack\src;..\..\..\addons\ofxOsc\libs\oscpack\src\ip;..\..\..\addons\ofxOsc\libs\oscpack\src\ip\posix;..\..\..\addons\ofxOsc\libs\oscpack\src\ip\win32;..\..\..\addons\ofxOsc\libs\oscpack\src\osc;..\..\..\addons\ofxOsc\src;D:\of_v0.9.8_vs_release\addons\ofxFontStash2\src;D:\of_v0.9.8_vs_release\addons\ofxFontStash2\libs\nanoVG\src;D:\of_v0.9.8_vs_release\addons\ofxFontStash2\libs\pugixml\src;
+D:\of_v0.9.8_vs_release\addons\ofxFontStash\src;
+D:\of_v0.9.8_vs_release\addons\ofxFontStash\libs\fontstash\src;
+libs/fontstash/src</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalOptions>-DNANOVG_GL2_IMPLEMENTATION</AdditionalOptions>
     </ClCompile>
     <Link>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
@@ -173,17 +168,12 @@ D:\of_v0.9.8_vs_release\addons\ofxFontStash2\libs\pugixml\src</AdditionalInclude
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);
-..\..\..\addons\ofxFontStash\libs;
-..\..\..\addons\ofxFontStash\libs\fontstash;
-..\..\..\addons\ofxFontStash\libs\fontstash\src;
-..\..\..\addons\ofxFontStash\src;
-..\..\..\addons\ofxGrt\src;
-..\..\..\addons\ofxGrt\libs\grt;
-D:\of_v0.9.8_vs_release\addons\ofxFontStash2\src;
-D:\of_v0.9.8_vs_release\addons\ofxFontStash2\libs\nanoVG\src;
-D:\of_v0.9.8_vs_release\addons\ofxFontStash2\libs\pugixml\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\..\..\addons\ofxFontStash2\libs;..\..\..\addons\ofxFontStash2\libs\nanoVG;..\..\..\addons\ofxFontStash2\libs\nanoVG\obsolete;..\..\..\addons\ofxFontStash2\libs\nanoVG\src;..\..\..\addons\ofxFontStash2\libs\pugixml;..\..\..\addons\ofxFontStash2\libs\pugixml\src;..\..\..\addons\ofxFontStash2\src;..\..\..\addons\ofxOsc\libs;..\..\..\addons\ofxOsc\libs\oscpack;..\..\..\addons\ofxOsc\libs\oscpack\src;..\..\..\addons\ofxOsc\libs\oscpack\src\ip;..\..\..\addons\ofxOsc\libs\oscpack\src\ip\posix;..\..\..\addons\ofxOsc\libs\oscpack\src\ip\win32;..\..\..\addons\ofxOsc\libs\oscpack\src\osc;..\..\..\addons\ofxOsc\src;D:\of_v0.9.8_vs_release\addons\ofxFontStash2\src;D:\of_v0.9.8_vs_release\addons\ofxFontStash2\libs\nanoVG\src;D:\of_v0.9.8_vs_release\addons\ofxFontStash2\libs\pugixml\src;
+D:\of_v0.9.8_vs_release\addons\ofxFontStash\src;
+D:\of_v0.9.8_vs_release\addons\ofxFontStash\libs\fontstash\src;
+libs/fontstash/src</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
+      <AdditionalOptions>-DNANOVG_GL2_IMPLEMENTATION</AdditionalOptions>
     </ClCompile>
     <Link>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
@@ -201,8 +191,23 @@ D:\of_v0.9.8_vs_release\addons\ofxFontStash2\libs\pugixml\src</AdditionalInclude
     <ClCompile Include="..\..\..\addons\ofxFontStash2\libs\pugixml\src\pugixml.cpp" />
     <ClCompile Include="..\..\..\addons\ofxFontStash2\src\ofxFontStash2.cpp" />
     <ClCompile Include="..\..\..\addons\ofxFontStash2\src\ofxFontStashParser.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxFontStash\libs\fontstash\src\fontstash.c" />
+    <ClCompile Include="..\..\..\addons\ofxFontStash\libs\fontstash\src\stb_truetype.c" />
+    <ClCompile Include="..\..\..\addons\ofxFontStash\src\ofxFontStash.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\ofApp.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscBundle.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscMessage.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscParameterSync.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscReceiver.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscSender.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\IpEndpointName.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\win32\NetworkingUtils.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\win32\UdpSocket.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscOutboundPacketStream.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscPrintReceivedElements.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscReceivedElements.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscTypes.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\addons\ofxFontStash2\libs\nanoVG\obsolete\nanovg_gl2.h" />
@@ -218,7 +223,30 @@ D:\of_v0.9.8_vs_release\addons\ofxFontStash2\libs\pugixml\src</AdditionalInclude
     <ClInclude Include="..\..\..\addons\ofxFontStash2\src\ofxFontStash2.h" />
     <ClInclude Include="..\..\..\addons\ofxFontStash2\src\ofxFontStashParser.h" />
     <ClInclude Include="..\..\..\addons\ofxFontStash2\src\ofxFontStashStyle.h" />
+    <ClInclude Include="..\..\..\addons\ofxFontStash\libs\fontstash\src\fontstash.h" />
+    <ClInclude Include="..\..\..\addons\ofxFontStash\libs\fontstash\src\stb_truetype.h" />
+    <ClInclude Include="..\..\..\addons\ofxFontStash\src\ofxFontStash.h" />
     <ClInclude Include="src\ofApp.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOsc.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscArg.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscBundle.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscMessage.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscParameterSync.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscReceiver.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscSender.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\IpEndpointName.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\NetworkingUtils.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\PacketListener.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\TimerListener.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\UdpSocket.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\MessageMappingOscPacketListener.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscException.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscHostEndianness.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscOutboundPacketStream.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscPacketListener.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscPrintReceivedElements.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscReceivedElements.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscTypes.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="$(OF_ROOT)\libs\openFrameworksCompiled\project\vs\openframeworksLib.vcxproj">
