@@ -1,6 +1,7 @@
 #pragma once
 
 #define USE_PROGRAMMABLE_PIPELINE 1
+#define MANUAL false
 
 #include "ofMain.h"
 #include "ofxKinectForWindows2.h"
@@ -52,7 +53,8 @@ class ofApp : public ofBaseApp{
 		ofxOscReceiver oscReceiver;
 		ofxOscMessage oscMessage;
 		default_random_engine rng;
-		ofxFontStash2::Fonts font;
+		//ofxFontStash2::Fonts font;
 		ofTrueTypeFont trueTypeFont;
 		bool savedPosture = false;
+		//float progression_speed = 0.0f;
 };

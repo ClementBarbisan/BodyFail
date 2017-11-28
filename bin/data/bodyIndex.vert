@@ -16,6 +16,7 @@ uniform int uWidth;
 out float vKeep;
 out vec2 vTexCoord;
 
+
 out Vertex
 {
 	vec2 vTexCoord;

@@ -17,22 +17,22 @@ void ofApp::setup(){
 	shader.load("bodyIndex.vert", "bodyIndex.frag", "bodyIndex.geom");
 	raytracing.load("raytracer.vert", "raytracer.frag", "raytracer.geom");
 	rng = default_random_engine{};
-	//font.setup();
-	//font.addFont("backFont", "backFont.ttf");
 	trueTypeFont.loadFont("backFont.ttf", 12);
-	//ofxFontStash2::Style style;
-	//style.color = ofColor::white;
-	//style.fontID = "backFont";
-	//style.fontSize = 12;
-	//font.addStyle("backFontStyle", style);
-	//font.setDefaultStyle("backFontStyle");
+	/*font.setup(false);
+	font.addFont("backFont", "backFont.ttf");
+	ofxFontStash2::Style style;
+	style.color = ofColor::white;
+	style.fontID = "backFont";
+	style.fontSize = 12;
+	font.addStyle("backFontStyle", style);
+	font.setDefaultStyle("backFontStyle");*/
 	soundStream.setup(this, 2, 0, 44100, 512, 4);
 	oscReceiver.setup(8532);
 	//pipeline.load("pipeline_data.grt"); //The MLP algorithm directly supports multi-dimensional outputs, so MDRegression is not required here
 	buffer = new float[75];
 	for (int i = 0; i < 75; i++)
 		buffer[i] = 1;
-	//ofSetFullscreen(true);
+	ofSetFullscreen(true);
 	ofHideCursor();
 	ofSetColor(255);
 	ofBackground(0);
@@ -45,21 +45,31 @@ void ofApp::setup(){
 void ofApp::update(){
 	kinect.update();
 	//timeToUpdate += ofGetLastFrameTime();
-	if (abs(lookalikeTarget - lookalike) > 0.001)
+	if (MANUAL)
 	{
-		if (lookalikeTarget > lookalike)
-			lookalike += 0.001;
-		else
-			lookalike -= 0.001;
+		if (abs(lookalikeTarget - lookalike) > 0.001)
+		{
+			if (lookalikeTarget > lookalike)
+				lookalike += 0.001;
+			else
+				lookalike -= 0.001;
+		}
 	}
 	while (oscReceiver.hasWaitingMessages())
 	{
 		oscReceiver.getNextMessage(oscMessage);
-		if (oscMessage.getArgTypeName(0) == "f")
+		if (oscMessage.getAddress() == "/progress")
+		{
 			lookalike = 1.0 - oscMessage.getArgAsFloat(0);
+			break;
+		}
+		//else if (oscMessage.getAddress() == "/progress_speed")
+			//progression_speed = oscMessage.getArgAsFloat(0);
 		//lookalike = 1.0 -;
-		ofLog() << lookalike;
+		//ofLog() << lookalike;
+		//ofLog() << "Treated = " << ((lookalike)*(((3 - (lookalike*(2 - lookalike))) - (lookalike))));
 	}
+	//lookalike += progression_speed / (10 / progression_speed);
 	//if (kinect.isFrameNew() && timeToUpdate >= 0.25f && pipeline.getTrained())
 	//{
 	//	timeToUpdate = 0;
@@ -177,7 +187,7 @@ void ofApp::draw()
 	mesh.draw();
 	vector<size_t> & indices = meshWireframe.getIndices();
 	//shuffle(meshWireframe.getIndices().begin(), meshWireframe.getIndices().end(), rng);
-	for (int i = 0; i < indices.size(); i += 4 + 100 * lookalike * lookalike)
+	for (int i = 0; i < indices.size(); i += 4 + 100 * lookalike)
 	{
 		int random = rand() % indices.size();
 		swap(indices[i], indices[random]);
