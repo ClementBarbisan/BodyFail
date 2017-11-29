@@ -9,26 +9,34 @@ int main(){
 	settings.setGLVersion(4, 3);
 	settings.width = 1400;
 	settings.height = 1050;
-	//settings.monitor = 2;
+	settings.monitor = 0;
 	//settings.multiMonitorFullScreen = true;
-	//settings.windowMode = OF_WINDOW;
-	//settings.setPosition(ofVec2f(1920, 0));
+	if (FULLSCREEN)
+		settings.windowMode = OF_FULLSCREEN;
+	else
+		settings.windowMode = OF_WINDOW;
+	settings.setPosition(ofVec2f(0, 0));
 	shared_ptr<ofAppBaseWindow> mainWindow = ofCreateWindow(settings);
-	//settings.setGLVersion(4, 3);
-	//settings.width = 1024;
-	//settings.height = 1024;
-	//settings.monitor = 1;
-	////settings.multiMonitorFullScreen = true;
-	//settings.setPosition(ofVec2f(0, 0));
-	//// uncomment next line to share main's OpenGL resources with gui
-	////settings.shareContextWith = mainWindow;	
-	//shared_ptr<ofAppBaseWindow> guiWindow = ofCreateWindow(settings);
-	//guiWindow->setVerticalSync(false);
-
 	shared_ptr<ofApp> mainApp(new ofApp);
-	//mainApp->setupGui();
-	//ofAddListener(guiWindow->events().draw, mainApp.get(), &ofApp::drawGui);
-
+	if (!NOMULTIPLESCREEN)
+	{
+		settings.setGLVersion(4, 3);
+		settings.width = 1400;
+		settings.height = 1050;
+		if (FULLSCREEN)
+			settings.windowMode = OF_GAME_MODE;
+		else
+			settings.windowMode = OF_WINDOW;
+		settings.monitor = 1;
+		//settings.multiMonitorFullScreen = true;
+		settings.setPosition(ofVec2f(-1439, 0));
+		// uncomment next line to share main's OpenGL resources with gui
+		settings.shareContextWith = mainWindow;
+		shared_ptr<ofAppBaseWindow> guiWindow = ofCreateWindow(settings);
+		guiWindow->setVerticalSync(false);
+		mainApp->setupGui();
+		ofAddListener(guiWindow->events().draw, mainApp.get(), &ofApp::drawGui);
+	}
 	ofRunApp(mainWindow, mainApp);
 	ofRunMainLoop();
 

@@ -1,11 +1,17 @@
 #include "ofApp.h"
 
 //--------------------------------------------------------------
-//void ofApp::setupGui()
-//{
-//	ofHideCursor();
-//	ofSetFullscreen(true);
-//}
+void ofApp::setupGui()
+{
+	ofBackground(0);
+	ofHideCursor();
+	ofSetWindowTitle("BodyFail");
+	ofDirectory dir("");
+	stringstream filePath;
+	filePath << "start cmd.exe " << dir.getAbsolutePath() << "/AutoFocus.bat";
+	system(filePath.str().c_str());
+	//ofSetFullscreen(true);
+}
 
 //--------------------------------------------------------------
 void ofApp::setup(){
@@ -16,7 +22,7 @@ void ofApp::setup(){
 	kinect.initBodyIndexSource();
 	shader.load("bodyIndex.vert", "bodyIndex.frag", "bodyIndex.geom");
 	raytracing.load("raytracer.vert", "raytracer.frag", "raytracer.geom");
-	rng = default_random_engine{};
+	//rng = default_random_engine{};
 	trueTypeFont.loadFont("backFont.ttf", 12);
 	/*font.setup(false);
 	font.addFont("backFont", "backFont.ttf");
@@ -38,8 +44,8 @@ void ofApp::setup(){
 	oscMessage.addFloatArg(speedWeight);
 	oscMessage.addFloatArg(positionWeight);
 	oscMessage.addFloatArg(globalWeight);
-	oscMessage.addFloatArg(globalWeight);
-	oscMessage.addFloatArg(globalWeight - 0.3);
+	oscMessage.addFloatArg(globalWeight / 2);
+	oscMessage.addFloatArg(globalWeight / 4);
 	oscMessage.addFloatArg(maximumValue);
 	oscSender.sendMessage(oscMessage);
 	//pipeline.load("pipeline_data.grt"); //The MLP algorithm directly supports multi-dimensional outputs, so MDRegression is not required here
@@ -76,7 +82,7 @@ void ofApp::update(){
 		{
 			if (oscMessage.getAddress() == "/progress_speed")
 			{
-				if (oscMessage.getArgAsFloat(0) < 0.05)
+				if (oscMessage.getArgAsFloat(0) < 0)
 				{
 					oscMessage.clear();
 					oscMessage.setAddress("/reset");
@@ -149,11 +155,55 @@ void ofApp::update(){
 }
 
 //-------------------------------------------------------------
-//void ofApp::drawGui(ofEventArgs &args)
-//{
-//	
-//	
-//}
+void ofApp::drawGui(ofEventArgs &args)
+{
+	if (lookalike < 0.01)
+	{
+		for (int i = 0; i < 100; i++)
+		{
+			if ((i + errorIndex) % 2 == 0)
+				//font.drawFormatted("..yrteR", 200, 10 * i + 10);
+				trueTypeFont.drawString("..yrteR", 200, 10 * i + 10);
+			else
+				//font.drawFormatted("detpurroc eroC : tluaF noitatnemgeS", 200, 10 * i + 10);
+				trueTypeFont.drawString("detpurroc eroC : tluaF noitatnemgeS", 200, 10 * i + 10);
+		}
+		errorIndex++;
+		if (errorIndex == 50)
+			errorIndex = 0;
+		return;
+	}
+	rotate(coordinates.begin(), coordinates.begin() + 25, coordinates.end());
+	auto bodies = kinect.getBodySource()->getBodies();
+	for (auto body : bodies)
+	{
+		if (body.joints.size() == 25)
+		{
+			int index = 0;
+			for (auto joint : body.joints)
+			{
+				stringstream stream;
+				stream << joint.first << " " << joint.second.getPosition();
+				if (index <= 25)
+				{
+					coordinates[74 + index] = stream.str();
+					reverse(coordinates[74 + index].begin(), coordinates[74 + index].end());
+				}
+				maxBuffer = MAX(abs(joint.second.getPosition().x), abs(joint.second.getPosition().y));
+				maxBuffer = MAX(maxBuffer, abs(joint.second.getPosition().z));
+				buffer[index * 3] = joint.second.getPosition().x;
+				buffer[index * 3 + 1] = joint.second.getPosition().y;
+				buffer[index * 3 + 2] = joint.second.getPosition().z;
+				index++;
+			}
+		}
+	}
+	for (int i = 0; i < 100; i++)
+	{
+		//font.drawFormatted(coordinates[i], 200, 10 * i + 10);
+		trueTypeFont.drawString(coordinates[i], 200, 10 * i + 10);
+	}
+}
 int clip(int n, int lower, int upper) {
 	return std::max(lower, std::min(n, upper));
 }
@@ -201,18 +251,21 @@ void ofApp::draw()
 		ofTranslate(-ofGetWidth() / 2, -ofGetHeight() / 2);
 		kinect.getBodySource()->drawProjected(0, 0, ofGetWidth(), ofGetHeight(), ofxKinectForWindows2::ColorCamera);
 		ofPopMatrix();
-		for (int i = 0; i < 75; i++)
+		if (NOMULTIPLESCREEN)
 		{
-			if ((i + errorIndex) % 2 == 0)
-				//font.drawFormatted("..yrteR", 200, 10 * i + 10);
-				trueTypeFont.drawString("..yrteR", 200, 10 * i + 10);
-			else
-				//font.drawFormatted("detpurroc eroC : tluaF noitatnemgeS", 200, 10 * i + 10);
-				trueTypeFont.drawString("detpurroc eroC : tluaF noitatnemgeS", 200, 10 * i + 10);
+			for (int i = 0; i < 100; i++)
+			{
+				if ((i + errorIndex) % 2 == 0)
+					//font.drawFormatted("..yrteR", 200, 10 * i + 10);
+					trueTypeFont.drawString("..yrteR", 200, 10 * i + 10);
+				else
+					//font.drawFormatted("detpurroc eroC : tluaF noitatnemgeS", 200, 10 * i + 10);
+					trueTypeFont.drawString("detpurroc eroC : tluaF noitatnemgeS", 200, 10 * i + 10);
+			}
+			errorIndex++;
+			if (errorIndex == 50)
+				errorIndex = 0;
 		}
-		errorIndex++;
-		if (errorIndex == 50)
-			errorIndex = 0;
 		return;
 	}
 	savedPosture = false;
@@ -266,36 +319,39 @@ void ofApp::draw()
 	ofSetColor(0, 0, 0, 20 + 60 * lookalike);
 	ofDrawRectangle(0, 0, 1400, 1050);
 	framebuffer.end();
-	rotate(coordinates.begin(), coordinates.begin() + 50, coordinates.end());
 	maxBuffer = 0;
-	auto bodies = kinect.getBodySource()->getBodies();
-	for (auto body : bodies)
+	if (NOMULTIPLESCREEN)
 	{
-		if (body.joints.size() == 25)
+		rotate(coordinates.begin(), coordinates.begin() + 25, coordinates.end());
+		auto bodies = kinect.getBodySource()->getBodies();
+		for (auto body : bodies)
 		{
-			int index = 0;
-			for (auto joint : body.joints)
+			if (body.joints.size() == 25)
 			{
-				stringstream stream;
-				stream << joint.first << " " << joint.second.getPosition();
-				if (index <= 25)
+				int index = 0;
+				for (auto joint : body.joints)
 				{
-					coordinates[49 + index] = stream.str();
-					reverse(coordinates[49 + index].begin(), coordinates[49 + index].end());
+					stringstream stream;
+					stream << joint.first << " " << joint.second.getPosition();
+					if (index <= 25)
+					{
+						coordinates[74 + index] = stream.str();
+						reverse(coordinates[74 + index].begin(), coordinates[74 + index].end());
+					}
+					maxBuffer = MAX(abs(joint.second.getPosition().x), abs(joint.second.getPosition().y));
+					maxBuffer = MAX(maxBuffer, abs(joint.second.getPosition().z));
+					buffer[index * 3] = joint.second.getPosition().x;
+					buffer[index * 3 + 1] = joint.second.getPosition().y;
+					buffer[index * 3 + 2] = joint.second.getPosition().z;
+					index++;
 				}
-				maxBuffer = MAX(abs(joint.second.getPosition().x), abs(joint.second.getPosition().y));
-				maxBuffer = MAX(maxBuffer, abs(joint.second.getPosition().z));
-				buffer[index * 3] = joint.second.getPosition().x;
-				buffer[index * 3 + 1] = joint.second.getPosition().y;
-				buffer[index * 3 + 2] = joint.second.getPosition().z;
-				index++;
 			}
 		}
-	}
-	for (int i = 0; i < 75; i++)
-	{
-		//font.drawFormatted(coordinates[i], 200, 10 * i + 10);
-		trueTypeFont.drawString(coordinates[i], 200, 10 * i + 10);
+		for (int i = 0; i < 100; i++)
+		{
+			//font.drawFormatted(coordinates[i], 200, 10 * i + 10);
+			trueTypeFont.drawString(coordinates[i], 200, 10 * i + 10);
+		}
 	}
 	ofSetWindowTitle(ofToString(ofGetFrameRate(), 2));
 }

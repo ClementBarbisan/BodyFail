@@ -2,6 +2,8 @@
 
 #define USE_PROGRAMMABLE_PIPELINE 1
 #define MANUAL false
+#define NOMULTIPLESCREEN true
+#define FULLSCREEN false
 
 #include "ofMain.h"
 #include "ofxKinectForWindows2.h"
@@ -14,10 +16,10 @@ class ofApp : public ofBaseApp{
 
 	public:
 		void setup();
-		//void setupGui();
+		void setupGui();
 		void update();
 		void draw();
-		//void drawGui(ofEventArgs & args);
+		void drawGui(ofEventArgs & args);
 
 		void keyPressed(int key);
 		void keyReleased(int key);
@@ -34,7 +36,7 @@ class ofApp : public ofBaseApp{
 		ofEasyCam cam;
 		ofShader shader;
 		ofShader raytracing;
-		vector<string> coordinates = vector<string>(75);
+		vector<string> coordinates = vector<string>(100);
 		//float timeToUpdate = 0;
 		//RegressionData trainingData;      		//This will store our training data
 		//GestureRecognitionPipeline pipeline;        //This is a wrapper for our regression and any pre/post processing modules 
@@ -53,7 +55,7 @@ class ofApp : public ofBaseApp{
 		ofxOscReceiver oscReceiver;
 		ofxOscSender oscSender;
 		ofxOscMessage oscMessage;
-		default_random_engine rng;
+		//default_random_engine rng;
 		//ofxFontStash2::Fonts font;
 		ofTrueTypeFont trueTypeFont;
 		bool savedPosture = false;
