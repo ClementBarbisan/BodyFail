@@ -61,15 +61,6 @@
     <ClCompile Include="..\..\..\addons\ofxFontStash2\libs\pugixml\src\pugixml.cpp">
       <Filter>addons\ofxFontStash2\libs\pugixml\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxFontStash\src\ofxFontStash.cpp">
-      <Filter>addons\ofxFontStash\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxFontStash\libs\fontstash\src\fontstash.c">
-      <Filter>addons\ofxFontStash\libs\fontstash\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxFontStash\libs\fontstash\src\stb_truetype.c">
-      <Filter>addons\ofxFontStash\libs\fontstash\src</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -125,21 +116,6 @@
     </Filter>
     <Filter Include="addons\ofxFontStash2\libs\pugixml\src">
       <UniqueIdentifier>{fdf97666-698c-4520-acdc-c12b6432f6fb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxFontStash">
-      <UniqueIdentifier>{66e5f447-a169-43d4-bf5f-5edccde54e73}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxFontStash\src">
-      <UniqueIdentifier>{688e836d-65bc-41a5-9c29-c2b45eb9651e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxFontStash\libs">
-      <UniqueIdentifier>{21d60921-4236-41b0-a3c5-bf89f8580852}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxFontStash\libs\fontstash">
-      <UniqueIdentifier>{7cfc55e7-7093-4bff-ba4e-a0cb03170dc5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxFontStash\libs\fontstash\src">
-      <UniqueIdentifier>{402ba5db-9d0d-4f74-be36-213b25aad637}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -247,15 +223,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\addons\ofxFontStash2\libs\pugixml\src\pugixml.hpp">
       <Filter>addons\ofxFontStash2\libs\pugixml\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxFontStash\src\ofxFontStash.h">
-      <Filter>addons\ofxFontStash\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxFontStash\libs\fontstash\src\fontstash.h">
-      <Filter>addons\ofxFontStash\libs\fontstash\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxFontStash\libs\fontstash\src\stb_truetype.h">
-      <Filter>addons\ofxFontStash\libs\fontstash\src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -51,10 +51,16 @@ class ofApp : public ofBaseApp{
 		float initialLookalikeTarget = 1.0f;
 		float initialLookalike = 1.0f;
 		ofxOscReceiver oscReceiver;
+		ofxOscSender oscSender;
 		ofxOscMessage oscMessage;
 		default_random_engine rng;
 		//ofxFontStash2::Fonts font;
 		ofTrueTypeFont trueTypeFont;
 		bool savedPosture = false;
+		float speedWeight = 1.0;
+		float positionWeight = 0.7;
+		int maximumValue = 500;
+		int behaviour = 1;
+		float globalWeight = 1.0;
 		//float progression_speed = 0.0f;
 };

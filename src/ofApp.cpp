@@ -28,11 +28,25 @@ void ofApp::setup(){
 	font.setDefaultStyle("backFontStyle");*/
 	soundStream.setup(this, 2, 0, 44100, 512, 4);
 	oscReceiver.setup(8532);
+	oscSender.setup("127.0.0.1", 8534);
+	oscMessage.clear();
+	oscMessage.setAddress("/modality");
+	oscMessage.addIntArg(behaviour);
+	oscSender.sendMessage(oscMessage);
+	oscMessage.clear();
+	oscMessage.setAddress("/parameters");
+	oscMessage.addFloatArg(speedWeight);
+	oscMessage.addFloatArg(positionWeight);
+	oscMessage.addFloatArg(globalWeight);
+	oscMessage.addFloatArg(globalWeight);
+	oscMessage.addFloatArg(globalWeight - 0.3);
+	oscMessage.addFloatArg(maximumValue);
+	oscSender.sendMessage(oscMessage);
 	//pipeline.load("pipeline_data.grt"); //The MLP algorithm directly supports multi-dimensional outputs, so MDRegression is not required here
 	buffer = new float[75];
 	for (int i = 0; i < 75; i++)
 		buffer[i] = 1;
-	ofSetFullscreen(true);
+	//ofSetFullscreen(true);
 	ofHideCursor();
 	ofSetColor(255);
 	ofBackground(0);
@@ -58,6 +72,20 @@ void ofApp::update(){
 	while (oscReceiver.hasWaitingMessages())
 	{
 		oscReceiver.getNextMessage(oscMessage);
+		if (lookalike < 0.01)
+		{
+			if (oscMessage.getAddress() == "/progress_speed")
+			{
+				if (oscMessage.getArgAsFloat(0) < 0.05)
+				{
+					oscMessage.clear();
+					oscMessage.setAddress("/reset");
+					oscMessage.addIntArg(1);
+					oscSender.sendMessage(oscMessage);
+				}
+					
+			}
+		}
 		if (oscMessage.getAddress() == "/progress")
 		{
 			lookalike = 1.0 - oscMessage.getArgAsFloat(0);
@@ -68,6 +96,30 @@ void ofApp::update(){
 		//lookalike = 1.0 -;
 		//ofLog() << lookalike;
 		//ofLog() << "Treated = " << ((lookalike)*(((3 - (lookalike*(2 - lookalike))) - (lookalike))));
+	}
+	if (lookalike > 0.75 || lookalike < 0.1)
+	{
+		oscMessage.clear();
+		oscMessage.setAddress("/parameters");
+		oscMessage.addFloatArg(speedWeight * 2);
+		oscMessage.addFloatArg(positionWeight * 2);
+		oscMessage.addFloatArg(globalWeight);
+		oscMessage.addFloatArg(globalWeight / 2);
+		oscMessage.addFloatArg(globalWeight / 4);
+		oscMessage.addFloatArg(maximumValue);
+		oscSender.sendMessage(oscMessage);
+	}
+	else
+	{
+		oscMessage.clear();
+		oscMessage.setAddress("/parameters");
+		oscMessage.addFloatArg(speedWeight);
+		oscMessage.addFloatArg(positionWeight);
+		oscMessage.addFloatArg(globalWeight);
+		oscMessage.addFloatArg(globalWeight / 2);
+		oscMessage.addFloatArg(globalWeight / 4);
+		oscMessage.addFloatArg(maximumValue);
+		oscSender.sendMessage(oscMessage);
 	}
 	//lookalike += progression_speed / (10 / progression_speed);
 	//if (kinect.isFrameNew() && timeToUpdate >= 0.25f && pipeline.getTrained())
