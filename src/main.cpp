@@ -8,7 +8,7 @@ int main(){
 	ofGLFWWindowSettings settings;
 	settings.setGLVersion(4, 3);
 	settings.width = 1400;
-	settings.height = 1050;
+	settings.height = 1080;
 	settings.monitor = 0;
 	//settings.multiMonitorFullScreen = true;
 	if (FULLSCREEN)
@@ -16,6 +16,7 @@ int main(){
 	else
 		settings.windowMode = OF_WINDOW;
 	settings.setPosition(ofVec2f(0, 0));
+	settings.multiMonitorFullScreen = true;
 	shared_ptr<ofAppBaseWindow> mainWindow = ofCreateWindow(settings);
 	shared_ptr<ofApp> mainApp(new ofApp);
 	if (!NOMULTIPLESCREEN)
@@ -29,7 +30,7 @@ int main(){
 			settings.windowMode = OF_WINDOW;
 		settings.monitor = 1;
 		//settings.multiMonitorFullScreen = true;
-		settings.setPosition(ofVec2f(-1439, 0));
+		settings.setPosition(ofVec2f(-1399, 0));
 		// uncomment next line to share main's OpenGL resources with gui
 		settings.shareContextWith = mainWindow;
 		shared_ptr<ofAppBaseWindow> guiWindow = ofCreateWindow(settings);

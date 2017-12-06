@@ -1,5 +1,9 @@
 #include "ofApp.h"
 
+int clip(int n, int lower, int upper) {
+	return std::max(lower, std::min(n, upper));
+}
+
 //--------------------------------------------------------------
 void ofApp::setupGui()
 {
@@ -8,7 +12,7 @@ void ofApp::setupGui()
 	ofSetWindowTitle("BodyFail");
 	ofDirectory dir("");
 	stringstream filePath;
-	filePath << "start cmd.exe " << dir.getAbsolutePath() << "/AutoFocus.bat";
+	filePath << "start cmd.exe \"" << dir.getAbsolutePath() << "/data/AutoFocus.bat\"";
 	system(filePath.str().c_str());
 	//ofSetFullscreen(true);
 }
@@ -44,8 +48,8 @@ void ofApp::setup(){
 	oscMessage.addFloatArg(speedWeight);
 	oscMessage.addFloatArg(positionWeight);
 	oscMessage.addFloatArg(globalWeight);
-	oscMessage.addFloatArg(globalWeight / 2);
-	oscMessage.addFloatArg(globalWeight / 4);
+	oscMessage.addFloatArg(globalWeight / 1.5);
+	oscMessage.addFloatArg(globalWeight / 3);
 	oscMessage.addFloatArg(maximumValue);
 	oscSender.sendMessage(oscMessage);
 	//pipeline.load("pipeline_data.grt"); //The MLP algorithm directly supports multi-dimensional outputs, so MDRegression is not required here
@@ -75,27 +79,26 @@ void ofApp::update(){
 				lookalike -= 0.001;
 		}
 	}
+	if (resetDelayer > 5.0f)
+	{
+		oscMessage.clear();
+		oscMessage.setAddress("/reset");
+		oscMessage.addIntArg(1);
+		oscSender.sendMessage(oscMessage);
+	}
+	else if (lookalike < 0.01)
+		return;
+	resetDelayer = 0;
 	while (oscReceiver.hasWaitingMessages())
 	{
 		oscReceiver.getNextMessage(oscMessage);
-		if (lookalike < 0.01)
+		if (oscMessage.getAddress() == "/progress_speed")
 		{
-			if (oscMessage.getAddress() == "/progress_speed")
-			{
-				if (oscMessage.getArgAsFloat(0) < 0)
-				{
-					oscMessage.clear();
-					oscMessage.setAddress("/reset");
-					oscMessage.addIntArg(1);
-					oscSender.sendMessage(oscMessage);
-				}
-					
-			}
+			progression_speed = oscMessage.getArgAsFloat(0);
 		}
 		if (oscMessage.getAddress() == "/progress")
 		{
 			lookalike = 1.0 - oscMessage.getArgAsFloat(0);
-			break;
 		}
 		//else if (oscMessage.getAddress() == "/progress_speed")
 			//progression_speed = oscMessage.getArgAsFloat(0);
@@ -107,11 +110,11 @@ void ofApp::update(){
 	{
 		oscMessage.clear();
 		oscMessage.setAddress("/parameters");
-		oscMessage.addFloatArg(speedWeight * 2);
-		oscMessage.addFloatArg(positionWeight * 2);
+		oscMessage.addFloatArg(speedWeight * 1.5);
+		oscMessage.addFloatArg(positionWeight * 1.5);
 		oscMessage.addFloatArg(globalWeight);
-		oscMessage.addFloatArg(globalWeight / 2);
-		oscMessage.addFloatArg(globalWeight / 4);
+		oscMessage.addFloatArg(globalWeight / 1.5);
+		oscMessage.addFloatArg(globalWeight / 3);
 		oscMessage.addFloatArg(maximumValue);
 		oscSender.sendMessage(oscMessage);
 	}
@@ -122,12 +125,17 @@ void ofApp::update(){
 		oscMessage.addFloatArg(speedWeight);
 		oscMessage.addFloatArg(positionWeight);
 		oscMessage.addFloatArg(globalWeight);
-		oscMessage.addFloatArg(globalWeight / 2);
-		oscMessage.addFloatArg(globalWeight / 4);
+		oscMessage.addFloatArg(globalWeight / 1.5);
+		oscMessage.addFloatArg(globalWeight / 3);
 		oscMessage.addFloatArg(maximumValue);
 		oscSender.sendMessage(oscMessage);
 	}
-	//lookalike += progression_speed / (10 / progression_speed);
+	if (lookalike > 0.01)
+	{
+		if (oldLookalike != lookalike)
+			lookalike += clip(progression_speed, 0, 1) / (5 + (1 - lookalike) * 5);
+		oldLookalike = lookalike;
+	}
 	//if (kinect.isFrameNew() && timeToUpdate >= 0.25f && pipeline.getTrained())
 	//{
 	//	timeToUpdate = 0;
@@ -159,7 +167,7 @@ void ofApp::drawGui(ofEventArgs &args)
 {
 	if (lookalike < 0.01)
 	{
-		for (int i = 0; i < 100; i++)
+		for (int i = 0; i < 200; i++)
 		{
 			if ((i + errorIndex) % 2 == 0)
 				//font.drawFormatted("..yrteR", 200, 10 * i + 10);
@@ -169,7 +177,7 @@ void ofApp::drawGui(ofEventArgs &args)
 				trueTypeFont.drawString("detpurroc eroC : tluaF noitatnemgeS", 200, 10 * i + 10);
 		}
 		errorIndex++;
-		if (errorIndex == 50)
+		if (errorIndex == 200)
 			errorIndex = 0;
 		return;
 	}
@@ -186,8 +194,8 @@ void ofApp::drawGui(ofEventArgs &args)
 				stream << joint.first << " " << joint.second.getPosition();
 				if (index <= 25)
 				{
-					coordinates[74 + index] = stream.str();
-					reverse(coordinates[74 + index].begin(), coordinates[74 + index].end());
+					coordinates[174 + index] = stream.str();
+					reverse(coordinates[174 + index].begin(), coordinates[174 + index].end());
 				}
 				maxBuffer = MAX(abs(joint.second.getPosition().x), abs(joint.second.getPosition().y));
 				maxBuffer = MAX(maxBuffer, abs(joint.second.getPosition().z));
@@ -198,15 +206,13 @@ void ofApp::drawGui(ofEventArgs &args)
 			}
 		}
 	}
-	for (int i = 0; i < 100; i++)
+	for (int i = 0; i < 200; i++)
 	{
 		//font.drawFormatted(coordinates[i], 200, 10 * i + 10);
-		trueTypeFont.drawString(coordinates[i], 200, 10 * i + 10);
+		trueTypeFont.drawString(coordinates[i], 1600, 10 * i + 10);
 	}
 }
-int clip(int n, int lower, int upper) {
-	return std::max(lower, std::min(n, upper));
-}
+
 //--------------------------------------------------------------
 void ofApp::draw()
 {
@@ -214,6 +220,7 @@ void ofApp::draw()
 	stringstream ss;
 	if (lookalike <= 0.01)
 	{
+		resetDelayer += ofGetLastFrameTime();
 		if (!savedPosture)
 		{
 			auto bodies = kinect.getBodySource()->getBodies();
@@ -223,7 +230,7 @@ void ofApp::draw()
 				{
 					savedPosture = true;
 					stringstream url;
-					url << "http://127.0.0.1:8080/addSample?";
+					url << "http://bodyfail.com/addSample?";
 					for (auto joint : body.joints) 
 					{
 						if (index < 24)
@@ -253,17 +260,29 @@ void ofApp::draw()
 		ofPopMatrix();
 		if (NOMULTIPLESCREEN)
 		{
-			for (int i = 0; i < 100; i++)
+			for (int i = 0; i < 200; i++)
 			{
-				if ((i + errorIndex) % 2 == 0)
-					//font.drawFormatted("..yrteR", 200, 10 * i + 10);
-					trueTypeFont.drawString("..yrteR", 200, 10 * i + 10);
+				if (i < 100)
+				{
+					if ((i + errorIndex) % 2 == 0)
+						//font.drawFormatted("..yrteR", 200, 10 * i + 10);
+						trueTypeFont.drawString("..yrteR", 1600, 10 * i + 10);
+					else
+						//font.drawFormatted("detpurroc eroC : tluaF noitatnemgeS", 200, 10 * i + 10);
+						trueTypeFont.drawString("detpurroc eroC : tluaF noitatnemgeS", 1600, 10 * i + 10);
+				}
 				else
-					//font.drawFormatted("detpurroc eroC : tluaF noitatnemgeS", 200, 10 * i + 10);
-					trueTypeFont.drawString("detpurroc eroC : tluaF noitatnemgeS", 200, 10 * i + 10);
+				{
+					if ((i + errorIndex) % 2 == 0)
+						//font.drawFormatted("..yrteR", 200, 10 * i + 10);
+						trueTypeFont.drawString("..yrteR", 1600 + ofGetWidth() / 2, 10 * (i - 100) + 10);
+					else
+						//font.drawFormatted("detpurroc eroC : tluaF noitatnemgeS", 200, 10 * i + 10);
+						trueTypeFont.drawString("detpurroc eroC : tluaF noitatnemgeS", 1600 + ofGetWidth() / 2, 10 * (i - 100) + 10);
+				}
 			}
 			errorIndex++;
-			if (errorIndex == 50)
+			if (errorIndex == 200)
 				errorIndex = 0;
 		}
 		return;
@@ -335,8 +354,8 @@ void ofApp::draw()
 					stream << joint.first << " " << joint.second.getPosition();
 					if (index <= 25)
 					{
-						coordinates[74 + index] = stream.str();
-						reverse(coordinates[74 + index].begin(), coordinates[74 + index].end());
+						coordinates[174 + index] = stream.str();
+						reverse(coordinates[174 + index].begin(), coordinates[174 + index].end());
 					}
 					maxBuffer = MAX(abs(joint.second.getPosition().x), abs(joint.second.getPosition().y));
 					maxBuffer = MAX(maxBuffer, abs(joint.second.getPosition().z));
@@ -347,10 +366,13 @@ void ofApp::draw()
 				}
 			}
 		}
-		for (int i = 0; i < 100; i++)
+		for (int i = 0; i < 200; i++)
 		{
 			//font.drawFormatted(coordinates[i], 200, 10 * i + 10);
-			trueTypeFont.drawString(coordinates[i], 200, 10 * i + 10);
+			if (i < 101)
+				trueTypeFont.drawString(coordinates[i], 1600, 10 * i + 10);
+			else
+				trueTypeFont.drawString(coordinates[i], 1600 + ofGetWidth() / 2, 10 * (i - 100) + 10);
 		}
 	}
 	ofSetWindowTitle(ofToString(ofGetFrameRate(), 2));

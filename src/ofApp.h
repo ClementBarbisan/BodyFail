@@ -3,7 +3,7 @@
 #define USE_PROGRAMMABLE_PIPELINE 1
 #define MANUAL false
 #define NOMULTIPLESCREEN true
-#define FULLSCREEN false
+#define FULLSCREEN true
 
 #include "ofMain.h"
 #include "ofxKinectForWindows2.h"
@@ -36,7 +36,7 @@ class ofApp : public ofBaseApp{
 		ofEasyCam cam;
 		ofShader shader;
 		ofShader raytracing;
-		vector<string> coordinates = vector<string>(100);
+		vector<string> coordinates = vector<string>(200);
 		//float timeToUpdate = 0;
 		//RegressionData trainingData;      		//This will store our training data
 		//GestureRecognitionPipeline pipeline;        //This is a wrapper for our regression and any pre/post processing modules 
@@ -59,10 +59,12 @@ class ofApp : public ofBaseApp{
 		//ofxFontStash2::Fonts font;
 		ofTrueTypeFont trueTypeFont;
 		bool savedPosture = false;
-		float speedWeight = 1.0;
-		float positionWeight = 0.7;
+		float speedWeight = 1;
+		float positionWeight = 1;
 		int maximumValue = 500;
 		int behaviour = 1;
-		float globalWeight = 1.0;
-		//float progression_speed = 0.0f;
+		float globalWeight = 1;
+		float progression_speed = 0.0f;
+		float oldLookalike = 0.0f;
+		float resetDelayer = 0.0f;
 };
