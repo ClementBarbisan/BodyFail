@@ -48,8 +48,8 @@ void ofApp::setup(){
 	oscMessage.addFloatArg(speedWeight);
 	oscMessage.addFloatArg(positionWeight);
 	oscMessage.addFloatArg(globalWeight);
-	oscMessage.addFloatArg(globalWeight / 1.5);
-	oscMessage.addFloatArg(globalWeight / 3);
+	oscMessage.addFloatArg(globalWeight / 2);
+	oscMessage.addFloatArg(globalWeight / 4);
 	oscMessage.addFloatArg(maximumValue);
 	oscSender.sendMessage(oscMessage);
 	//pipeline.load("pipeline_data.grt"); //The MLP algorithm directly supports multi-dimensional outputs, so MDRegression is not required here
@@ -62,7 +62,7 @@ void ofApp::setup(){
 	ofBackground(0);
 	initialLookalike = lookalike;
 	initialLookalikeTarget = lookalikeTarget;
-	framebuffer.allocate(1400, 1050);
+	framebuffer.allocate(2560, 1024);
 }
 
 //--------------------------------------------------------------
@@ -113,8 +113,8 @@ void ofApp::update(){
 		oscMessage.addFloatArg(speedWeight * 1.5);
 		oscMessage.addFloatArg(positionWeight * 1.5);
 		oscMessage.addFloatArg(globalWeight);
-		oscMessage.addFloatArg(globalWeight / 1.5);
-		oscMessage.addFloatArg(globalWeight / 3);
+		oscMessage.addFloatArg(globalWeight / 4);
+		oscMessage.addFloatArg(globalWeight / 2);
 		oscMessage.addFloatArg(maximumValue);
 		oscSender.sendMessage(oscMessage);
 	}
@@ -125,15 +125,15 @@ void ofApp::update(){
 		oscMessage.addFloatArg(speedWeight);
 		oscMessage.addFloatArg(positionWeight);
 		oscMessage.addFloatArg(globalWeight);
-		oscMessage.addFloatArg(globalWeight / 1.5);
-		oscMessage.addFloatArg(globalWeight / 3);
+		oscMessage.addFloatArg(globalWeight / 2);
+		oscMessage.addFloatArg(globalWeight / 4);
 		oscMessage.addFloatArg(maximumValue);
 		oscSender.sendMessage(oscMessage);
 	}
 	if (lookalike > 0.01)
 	{
 		if (oldLookalike != lookalike)
-			lookalike += clip(progression_speed, 0, 1) / (5 + (1 - lookalike) * 5);
+			lookalike += clip(progression_speed, 0, 1) / (3 + (1 - lookalike) * 5);
 		oldLookalike = lookalike;
 	}
 	//if (kinect.isFrameNew() && timeToUpdate >= 0.25f && pipeline.getTrained())
@@ -206,10 +206,10 @@ void ofApp::drawGui(ofEventArgs &args)
 			}
 		}
 	}
-	for (int i = 0; i < 200; i++)
+	for (int i = 0; i < 100; i++)
 	{
 		//font.drawFormatted(coordinates[i], 200, 10 * i + 10);
-		trueTypeFont.drawString(coordinates[i], 1600, 10 * i + 10);
+		trueTypeFont.drawString(coordinates[i], 200, 10 * i + 10);
 	}
 }
 
@@ -266,19 +266,19 @@ void ofApp::draw()
 				{
 					if ((i + errorIndex) % 2 == 0)
 						//font.drawFormatted("..yrteR", 200, 10 * i + 10);
-						trueTypeFont.drawString("..yrteR", 1600, 10 * i + 10);
+						trueTypeFont.drawString("..yrteR", 1400, 10 * i + 10);
 					else
 						//font.drawFormatted("detpurroc eroC : tluaF noitatnemgeS", 200, 10 * i + 10);
-						trueTypeFont.drawString("detpurroc eroC : tluaF noitatnemgeS", 1600, 10 * i + 10);
+						trueTypeFont.drawString("detpurroc eroC : tluaF noitatnemgeS", 1400, 10 * i + 10);
 				}
 				else
 				{
 					if ((i + errorIndex) % 2 == 0)
 						//font.drawFormatted("..yrteR", 200, 10 * i + 10);
-						trueTypeFont.drawString("..yrteR", 1600 + ofGetWidth() / 2, 10 * (i - 100) + 10);
+						trueTypeFont.drawString("..yrteR", 1400 + ofGetWidth() / 2, 10 * (i - 100) + 10);
 					else
 						//font.drawFormatted("detpurroc eroC : tluaF noitatnemgeS", 200, 10 * i + 10);
-						trueTypeFont.drawString("detpurroc eroC : tluaF noitatnemgeS", 1600 + ofGetWidth() / 2, 10 * (i - 100) + 10);
+						trueTypeFont.drawString("detpurroc eroC : tluaF noitatnemgeS", 1400 + ofGetWidth() / 2, 10 * (i - 100) + 10);
 				}
 			}
 			errorIndex++;
@@ -336,7 +336,7 @@ void ofApp::draw()
 	framebuffer.begin();
 	ofFill();
 	ofSetColor(0, 0, 0, 20 + 60 * lookalike);
-	ofDrawRectangle(0, 0, 1400, 1050);
+	ofDrawRectangle(0, 0, 2560, 1024);
 	framebuffer.end();
 	maxBuffer = 0;
 	if (NOMULTIPLESCREEN)
@@ -370,9 +370,9 @@ void ofApp::draw()
 		{
 			//font.drawFormatted(coordinates[i], 200, 10 * i + 10);
 			if (i < 101)
-				trueTypeFont.drawString(coordinates[i], 1600, 10 * i + 10);
+				trueTypeFont.drawString(coordinates[i], 1400, 10 * i + 10);
 			else
-				trueTypeFont.drawString(coordinates[i], 1600 + ofGetWidth() / 2, 10 * (i - 100) + 10);
+				trueTypeFont.drawString(coordinates[i], 1400 + ofGetWidth() / 2, 10 * (i - 100) + 10);
 		}
 	}
 	ofSetWindowTitle(ofToString(ofGetFrameRate(), 2));
