@@ -68,4 +68,6 @@ class ofApp : public ofBaseApp{
 		float progression_speed = 0.0f;
 		float oldLookalike = 0.0f;
 		float resetDelayer = 0.0f;
+		bool insideSavedPosture = false;
+		float lookalikeMin = 0.05;
 };

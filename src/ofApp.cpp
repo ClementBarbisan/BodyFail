@@ -87,7 +87,7 @@ void ofApp::update(){
 		oscMessage.addIntArg(1);
 		oscSender.sendMessage(oscMessage);
 	}
-	else if (lookalike < 0.02)
+	else if (lookalike < lookalikeMin)
 		return;
 	resetDelayer = 0;
 	while (oscReceiver.hasWaitingMessages())
@@ -131,7 +131,7 @@ void ofApp::update(){
 		oscMessage.addFloatArg(maximumValue);
 		oscSender.sendMessage(oscMessage);
 	}
-	if (lookalike > 0.02)
+	if (lookalike > lookalikeMin)
 	{
 		if (oldLookalike != lookalike)
 			lookalike += clip(progression_speed, 0, 1) / (3 + (1 - lookalike) * 5);
@@ -166,7 +166,7 @@ void ofApp::update(){
 //-------------------------------------------------------------
 void ofApp::drawGui(ofEventArgs &args)
 {
-	if (lookalike < 0.02)
+	if (lookalike < lookalikeMin)
 	{
 		for (int i = 0; i < 200; i++)
 		{
@@ -219,11 +219,12 @@ void ofApp::draw()
 {
 	//framebuffer[0].begin();
 	stringstream ss;
-	if (lookalike <= 0.02)
+	if (lookalike <= lookalikeMin)
 	{
 		resetDelayer += ofGetLastFrameTime();
-		if (!savedPosture)
+		if (!savedPosture && !insideSavedPosture)
 		{
+			insideSavedPosture = true;
 			auto bodies = kinect.getBodySource()->getBodies();
 			int index = 0;
 			for (auto body : bodies) {
@@ -246,6 +247,7 @@ void ofApp::draw()
 					ofLoadURL(url.str());
 				}
 			}
+			insideSavedPosture = false;
 		}
 		maxBuffer = 1;
 		for (int i = 0; i < 75; i++)
