@@ -22,8 +22,8 @@ int main(){
 	if (!NOMULTIPLESCREEN)
 	{
 		settings.setGLVersion(4, 3);
-		settings.width = 1024;
-		settings.height = 768;
+		settings.width = 1280;
+		settings.height = 1024;
 		if (FULLSCREEN)
 			settings.windowMode = OF_GAME_MODE;
 		else
