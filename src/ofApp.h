@@ -48,6 +48,7 @@ class ofApp : public ofBaseApp{
 		float maxBuffer = 0;
 		string lookalikeString = "1.0";
 		ofFbo framebuffer;
+		ofFbo framebufferFinal;
 		float lookalikeTarget = 1.0f;
 		float lookalike = 1.0f;
 		float initialLookalikeTarget = 1.0f;

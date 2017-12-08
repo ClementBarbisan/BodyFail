@@ -62,7 +62,8 @@ void ofApp::setup(){
 	ofBackground(0);
 	initialLookalike = lookalike;
 	initialLookalikeTarget = lookalikeTarget;
-	framebuffer.allocate(2560, 1024);
+	framebuffer.allocate(1280, 1024);
+	framebufferFinal.allocate(2560, 1024);
 }
 
 //--------------------------------------------------------------
@@ -332,12 +333,9 @@ void ofApp::draw()
 	ofPopMatrix();
 	cam.end();
 	framebuffer.end();
+	framebufferFinal.begin();
 	framebuffer.draw(0, 0);
-	framebuffer.begin();
-	ofFill();
-	ofSetColor(0, 0, 0, 20 + 60 * lookalike);
-	ofDrawRectangle(0, 0, 2560, 1024);
-	framebuffer.end();
+	
 	maxBuffer = 0;
 	if (NOMULTIPLESCREEN)
 	{
@@ -375,6 +373,18 @@ void ofApp::draw()
 				trueTypeFont.drawString(coordinates[i], 1400 + ofGetWidth() / 2, 10 * (i - 100) + 10);
 		}
 	}
+	framebufferFinal.end();
+	framebufferFinal.draw(0, 0);
+	framebuffer.begin();
+	ofFill();
+	ofSetColor(0, 0, 0, 20 + 60 * lookalike);
+	ofDrawRectangle(0, 0, 1280, 1024);
+	framebuffer.end();
+	framebufferFinal.begin();
+	ofFill();
+	ofSetColor(0, 0, 0, 255);
+	ofDrawRectangle(0, 0, 2560, 1024);
+	framebufferFinal.end();
 	ofSetWindowTitle(ofToString(ofGetFrameRate(), 2));
 }
 
