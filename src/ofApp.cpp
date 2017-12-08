@@ -297,7 +297,6 @@ void ofApp::draw()
 	ofPushMatrix();
 	ofScale(100, 100, 100);
 	ofRotateY(180);
-	ofTranslate(-150, 0);
 	ofMesh mesh = kinect.getDepthSource()->getMesh(false, ofxKFW2::Source::Depth::PointCloudOptions::ColorCamera);
 	ofMesh meshWireframe = kinect.getDepthSource()->getMesh(true, ofxKFW2::Source::Depth::PointCloudOptions::ColorCamera);
 	ofTexture & texture = kinect.getBodyIndexSource()->getTexture();
