@@ -63,7 +63,7 @@ void ofApp::setup(){
 	initialLookalike = lookalike;
 	initialLookalikeTarget = lookalikeTarget;
 	framebuffer.allocate(1280, 1024);
-	framebufferFinal.allocate(2560, 1024);
+	//framebufferFinal.allocate(2560, 1024);
 }
 
 //--------------------------------------------------------------
@@ -297,6 +297,7 @@ void ofApp::draw()
 	ofPushMatrix();
 	ofScale(100, 100, 100);
 	ofRotateY(180);
+	ofTranslate(-150, 0);
 	ofMesh mesh = kinect.getDepthSource()->getMesh(false, ofxKFW2::Source::Depth::PointCloudOptions::ColorCamera);
 	ofMesh meshWireframe = kinect.getDepthSource()->getMesh(true, ofxKFW2::Source::Depth::PointCloudOptions::ColorCamera);
 	ofTexture & texture = kinect.getBodyIndexSource()->getTexture();
@@ -333,7 +334,7 @@ void ofApp::draw()
 	ofPopMatrix();
 	cam.end();
 	framebuffer.end();
-	framebufferFinal.begin();
+	//framebufferFinal.begin();
 	framebuffer.draw(0, 0);
 	
 	maxBuffer = 0;
@@ -373,18 +374,18 @@ void ofApp::draw()
 				trueTypeFont.drawString(coordinates[i], 1400 + ofGetWidth() / 2, 10 * (i - 100) + 10);
 		}
 	}
-	framebufferFinal.end();
-	framebufferFinal.draw(0, 0);
+	//framebufferFinal.end();
+	//framebufferFinal.draw(0, 0);
 	framebuffer.begin();
 	ofFill();
-	ofSetColor(0, 0, 0, 20 + 60 * lookalike);
+	ofSetColor(0, 0, 0, 20 + 40 * lookalike);
 	ofDrawRectangle(0, 0, 1280, 1024);
 	framebuffer.end();
-	framebufferFinal.begin();
+	/*framebufferFinal.begin();
 	ofFill();
 	ofSetColor(0, 0, 0, 255);
 	ofDrawRectangle(0, 0, 2560, 1024);
-	framebufferFinal.end();
+	framebufferFinal.end();*/
 	ofSetWindowTitle(ofToString(ofGetFrameRate(), 2));
 }
 
