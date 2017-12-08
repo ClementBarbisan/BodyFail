@@ -62,7 +62,7 @@ void ofApp::setup(){
 	ofBackground(0);
 	initialLookalike = lookalike;
 	initialLookalikeTarget = lookalikeTarget;
-	framebuffer.allocate(1280, 1024);
+	framebuffer.allocate(1024, 768);
 	//framebufferFinal.allocate(2560, 1024);
 }
 
@@ -335,11 +335,11 @@ void ofApp::draw()
 	framebuffer.end();
 	//framebufferFinal.begin();
 	framebuffer.draw(0, 0);
-	framebuffer.draw(1280, 0);
+	framebuffer.draw(1024, 0);
 	framebuffer.begin();
 	ofFill();
 	ofSetColor(0, 0, 0, 20 + 30 * lookalike);
-	ofDrawRectangle(0, 0, 1280, 1024);
+	ofDrawRectangle(0, 0, 1024, 768);
 	framebuffer.end();
 	maxBuffer = 0;
 	if (NOMULTIPLESCREEN)
@@ -373,9 +373,9 @@ void ofApp::draw()
 		{
 			//font.drawFormatted(coordinates[i], 200, 10 * i + 10);
 			if (i < 101)
-				trueTypeFont.drawString(coordinates[i], 1400, 10 * i + 10);
+				trueTypeFont.drawString(coordinates[i], 1200, 10 * i + 10);
 			else
-				trueTypeFont.drawString(coordinates[i], 1400 + ofGetWidth() / 2, 10 * (i - 100) + 10);
+				trueTypeFont.drawString(coordinates[i], 1200 + ofGetWidth() / 2, 10 * (i - 100) + 10);
 		}
 	}
 	//framebufferFinal.end();
