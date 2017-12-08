@@ -100,6 +100,7 @@ void ofApp::update(){
 		if (oscMessage.getAddress() == "/progress")
 		{
 			lookalike = 1.0 - oscMessage.getArgAsFloat(0);
+			originalLookalike = oscMessage.getArgAsFloat(0);
 		}
 		//else if (oscMessage.getAddress() == "/progress_speed")
 			//progression_speed = oscMessage.getArgAsFloat(0);
@@ -137,6 +138,20 @@ void ofApp::update(){
 			lookalike += clip(progression_speed, 0, 1) / (3 + (1 - lookalike) * 5);
 		oldLookalike = lookalike;
 	}
+	if (originalLookalike == oldOriginalLookalike)
+	{
+		index++;
+		if (index > 500)
+		{
+			oscMessage.clear();
+			oscMessage.setAddress("/reset");
+			oscMessage.addIntArg(1);
+			oscSender.sendMessage(oscMessage);
+		}
+	}
+	else
+		index = 0;
+	oldOriginalLookalike = originalLookalike;
 	//if (kinect.isFrameNew() && timeToUpdate >= 0.25f && pipeline.getTrained())
 	//{
 	//	timeToUpdate = 0;

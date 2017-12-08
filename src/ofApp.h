@@ -70,4 +70,7 @@ class ofApp : public ofBaseApp{
 		float resetDelayer = 0.0f;
 		bool insideSavedPosture = false;
 		float lookalikeMin = 0.1;
+		float oldOriginalLookalike = 0.0;
+		float originalLookalike = 0.0;
+		int index = 0;
 };
