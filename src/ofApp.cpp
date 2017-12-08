@@ -228,7 +228,7 @@ void ofApp::draw()
 			auto bodies = kinect.getBodySource()->getBodies();
 			int index = 0;
 			for (auto body : bodies) {
-				if (body.joints.size() == 25)
+				if (body.joints.count == 25)
 				{
 					savedPosture = true;
 					stringstream url;
