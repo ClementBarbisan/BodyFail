@@ -242,6 +242,7 @@ void ofApp::draw()
 						//now do something with the joints
 						index++;
 					}
+					url << "&place=EDF";
 					ofLoadURL(url.str());
 				}
 			}
