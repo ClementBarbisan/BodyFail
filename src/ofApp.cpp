@@ -62,7 +62,7 @@ void ofApp::setup(){
 	ofBackground(0);
 	initialLookalike = lookalike;
 	initialLookalikeTarget = lookalikeTarget;
-	framebuffer.allocate(2560, 1024);
+	framebuffer.allocate(1280, 1024);
 	//framebufferFinal.allocate(2560, 1024);
 }
 
@@ -379,7 +379,7 @@ void ofApp::draw()
 	framebuffer.begin();
 	ofFill();
 	ofSetColor(0, 0, 0, 20 + 40 * lookalike);
-	ofDrawRectangle(0, 0, 2560, 1024);
+	ofDrawRectangle(0, 0, 1280, 1024);
 	framebuffer.end();
 	/*framebufferFinal.begin();
 	ofFill();
