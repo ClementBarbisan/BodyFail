@@ -336,7 +336,11 @@ void ofApp::draw()
 	framebuffer.end();
 	//framebufferFinal.begin();
 	framebuffer.draw(0, 0);
-	
+	framebuffer.begin();
+	ofFill();
+	ofSetColor(0, 0, 0, 20 + 30 * lookalike);
+	ofDrawRectangle(0, 0, 1280, 1024);
+	framebuffer.end();
 	maxBuffer = 0;
 	if (NOMULTIPLESCREEN)
 	{
@@ -376,11 +380,7 @@ void ofApp::draw()
 	}
 	//framebufferFinal.end();
 	//framebufferFinal.draw(0, 0);
-	framebuffer.begin();
-	ofFill();
-	ofSetColor(0, 0, 0, 20 + 40 * lookalike);
-	ofDrawRectangle(0, 0, 1280, 1024);
-	framebuffer.end();
+	
 	/*framebufferFinal.begin();
 	ofFill();
 	ofSetColor(0, 0, 0, 255);
