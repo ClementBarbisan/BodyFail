@@ -335,6 +335,7 @@ void ofApp::draw()
 	framebuffer.end();
 	//framebufferFinal.begin();
 	framebuffer.draw(0, 0);
+	framebuffer.draw(1280, 0);
 	framebuffer.begin();
 	ofFill();
 	ofSetColor(0, 0, 0, 20 + 30 * lookalike);
