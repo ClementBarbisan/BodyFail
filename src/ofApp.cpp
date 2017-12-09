@@ -286,10 +286,10 @@ void ofApp::draw()
 		{
 			insideSavedPosture = true;
 			auto bodies = kinect.getBodySource()->getBodies();
-			int index = 0;
 			for (auto body : bodies) {
 				if (body.joints.size() >= 25)
 				{
+					int index = 0;
 					stringstream url;
 					url << "http://bodyfail.com/addSample?";
 					for (auto joint : body.joints) 
@@ -307,6 +307,7 @@ void ofApp::draw()
 					{
 						ofLoadURL(url.str());
 						savedPosture = true;
+						break;
 					}
 				}
 			}
