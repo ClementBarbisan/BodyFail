@@ -1,7 +1,71 @@
 #include "ofApp.h"
 
-int clip(int n, int lower, int upper) {
+int clipCustom(int n, int lower, int upper) {
 	return std::max(lower, std::min(n, upper));
+}
+
+void ofApp::killProcess()
+{
+	//const int maxProcIds = 1024;
+	//DWORD procList[maxProcIds];
+	//DWORD procCount;
+	//wchar_t* exeName = L"Launcher.exe";
+	//wchar_t processName[MAX_PATH];
+	//LPWSTR process = processName;
+	//// get the process by name
+	//if (!EnumProcesses(procList, sizeof(procList), &procCount))
+	//	return;
+
+	//// convert from bytes to processes
+	//procCount = procCount / sizeof(DWORD);
+
+	//// loop through all processes
+	//for (DWORD procIdx = 0; procIdx<procCount; procIdx++)
+	//{
+	//	// get a handle to the process
+	//	HANDLE procHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, procList[procIdx]);
+	//	// get the process name
+	//	GetProcessImageFileName(procHandle, processName, sizeof(processName));
+	//	// terminate all pocesses that contain the name
+	//	if (wcsstr(processName, exeName))
+	//		TerminateProcess(procHandle, 0);
+	//	CloseHandle(procHandle);
+	//}
+	systhread.stopThread();
+}
+
+void ofApp::startProcess()
+{
+	//ofLog() << "startProcess";
+	//// additional information
+	//STARTUPINFO si;
+	//PROCESS_INFORMATION pi;
+
+	//// set the size of the structures
+	//ZeroMemory(&si, sizeof(si));
+	//si.cb = sizeof(si);
+	//ZeroMemory(&pi, sizeof(pi));
+	//string app = "D:\Program Files (x86)\EyesWeb XMI 5.7.2.0\body_fail\Launcher.exe";
+	//std::wstring app_w(app.length(), L' '); // Make room for characters
+	//std::copy(app.begin(), app.end(), app_w.begin());
+	//const wchar_t* app_const = app_w.c_str();
+	//CreateProcessW(app_const,   // the path
+	//	NULL,        // Command line
+	//	NULL,           // Process handle not inheritable
+	//	NULL,           // Thread handle not inheritable
+	//	FALSE,          // Set handle inheritance to FALSE
+	//	0,              // No creation flags
+	//	NULL,           // Use parent's environment block
+	//	NULL,           // Use parent's starting directory 
+	//	&si,            // Pointer to STARTUPINFO structure
+	//	&pi             // Pointer to PROCESS_INFORMATION structure (removed extra parentheses)
+	//);
+	//// Close process and thread handles. 
+	//CloseHandle(pi.hProcess);
+	//CloseHandle(pi.hThread);
+	string cmd = "D:\Program Files (x86)\EyesWeb XMI 5.7.2.0\body_fail\Launcher.exe";
+	systhread.setup(cmd);
+	systhread.startThread();
 }
 
 //--------------------------------------------------------------
@@ -19,6 +83,7 @@ void ofApp::setupGui()
 
 //--------------------------------------------------------------
 void ofApp::setup(){
+	startProcess();
 	kinect.open();
 	kinect.initDepthSource();
 	kinect.initColorSource();
@@ -57,7 +122,6 @@ void ofApp::setup(){
 	for (int i = 0; i < 75; i++)
 		buffer[i] = 1;
 	//ofSetFullscreen(true);
-	ofHideCursor();
 	ofSetColor(255);
 	ofBackground(0);
 	initialLookalike = lookalike;
@@ -68,7 +132,9 @@ void ofApp::setup(){
 
 //--------------------------------------------------------------
 void ofApp::update(){
+	return;
 	kinect.update();
+	ofHideCursor();
 	//timeToUpdate += ofGetLastFrameTime();
 	if (MANUAL)
 	{
@@ -135,7 +201,7 @@ void ofApp::update(){
 	if (lookalike > lookalikeMin)
 	{
 		if (oldLookalike != lookalike)
-			lookalike += clip(progression_speed, 0, 1) / (3 + (1 - lookalike) * 5);
+			lookalike += clipCustom(progression_speed, 0, 1) / (3 + (1 - lookalike) * 5);
 		oldLookalike = lookalike;
 	}
 	if (originalLookalike == oldOriginalLookalike)
@@ -143,10 +209,8 @@ void ofApp::update(){
 		index++;
 		if (index > 500)
 		{
-			oscMessage.clear();
-			oscMessage.setAddress("/reset");
-			oscMessage.addIntArg(1);
-			oscSender.sendMessage(oscMessage);
+			killProcess();
+			startProcess();
 		}
 	}
 	else
@@ -232,6 +296,7 @@ void ofApp::drawGui(ofEventArgs &args)
 //--------------------------------------------------------------
 void ofApp::draw()
 {
+	return;
 	//framebuffer[0].begin();
 	stringstream ss;
 	if (lookalike <= lookalikeMin)
@@ -243,9 +308,8 @@ void ofApp::draw()
 			auto bodies = kinect.getBodySource()->getBodies();
 			int index = 0;
 			for (auto body : bodies) {
-				if (body.joints.count == 25)
+				if (body.joints.size() >= 25)
 				{
-					savedPosture = true;
 					stringstream url;
 					url << "http://bodyfail.com/addSample?";
 					for (auto joint : body.joints) 
@@ -259,7 +323,11 @@ void ofApp::draw()
 						index++;
 					}
 					url << "&place=EDF";
-					ofLoadURL(url.str());
+					if (index >= 25)
+					{
+						ofLoadURL(url.str());
+						savedPosture = true;
+					}
 				}
 			}
 			insideSavedPosture = false;
@@ -442,8 +510,8 @@ void ofApp::keyPressed(int key){
 			}
 		break;
 		case 'r':
-			lookalike = initialLookalike;
-			lookalikeTarget = initialLookalikeTarget;
+			killProcess();
+			startProcess();
 		break;
 	}
 }

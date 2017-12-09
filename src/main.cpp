@@ -7,8 +7,8 @@ int main(){
 #ifdef USE_PROGRAMMABLE_PIPELINE
 	ofGLFWWindowSettings settings;
 	settings.setGLVersion(4, 3);
-	settings.width = 1400;
-	settings.height = 1080;
+	settings.width = 1280;
+	settings.height = 1024;
 	settings.monitor = 0;
 	//settings.multiMonitorFullScreen = true;
 	if (FULLSCREEN)
@@ -16,7 +16,6 @@ int main(){
 	else
 		settings.windowMode = OF_WINDOW;
 	settings.setPosition(ofVec2f(0, 0));
-	settings.multiMonitorFullScreen = true;
 	shared_ptr<ofAppBaseWindow> mainWindow = ofCreateWindow(settings);
 	shared_ptr<ofApp> mainApp(new ofApp);
 	if (!NOMULTIPLESCREEN)

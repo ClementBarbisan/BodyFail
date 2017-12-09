@@ -3,7 +3,7 @@
 #define USE_PROGRAMMABLE_PIPELINE 1
 #define MANUAL false
 #define NOMULTIPLESCREEN true
-#define FULLSCREEN true
+#define FULLSCREEN false
 
 #include "ofMain.h"
 #include "ofxKinectForWindows2.h"
@@ -11,6 +11,24 @@
 #include "ofxOsc.h"
 #include <random>
 #include <algorithm>
+
+
+class SystemThread : public ofThread 
+{
+
+public:
+	string cmd;
+
+	void setup(string _cmd) {
+		this->cmd = _cmd;
+	}
+
+	void threadedFunction() {
+		if (isThreadRunning()) {
+			system(cmd.c_str());
+		}
+	};
+};
 
 class ofApp : public ofBaseApp{
 
@@ -20,6 +38,8 @@ class ofApp : public ofBaseApp{
 		void update();
 		void draw();
 		void drawGui(ofEventArgs & args);
+		void startProcess();
+		void killProcess();
 
 		void keyPressed(int key);
 		void keyReleased(int key);
@@ -73,4 +93,5 @@ class ofApp : public ofBaseApp{
 		float oldOriginalLookalike = 0.0;
 		float originalLookalike = 0.0;
 		int index = 0;
+		SystemThread systhread;
 };
