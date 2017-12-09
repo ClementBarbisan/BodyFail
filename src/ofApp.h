@@ -3,7 +3,8 @@
 #define USE_PROGRAMMABLE_PIPELINE 1
 #define MANUAL false
 #define NOMULTIPLESCREEN true
-#define FULLSCREEN true
+#define FULLSCREEN false
+#define TIMETORESET 30
 
 #include "ofMain.h"
 #include "ofxKinectForWindows2.h"
@@ -92,6 +93,7 @@ class ofApp : public ofBaseApp{
 		float lookalikeMin = 0.1;
 		float oldOriginalLookalike = 0.0;
 		float originalLookalike = 0.0;
-		int index = 0;
+		int indexStaySame = 0;
+		float timeElapsedSinceBug = 0;
 		SystemThread systhread;
 };

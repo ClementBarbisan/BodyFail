@@ -183,10 +183,6 @@ void ofApp::update(){
 			lookalike += clipCustom(progression_speed, 0, 1) / (3 + (1 - lookalike) * 5);
 		oldLookalike = lookalike;
 	}
-	
-	else
-		index = 0;
-	oldOriginalLookalike = originalLookalike;
 	//if (kinect.isFrameNew() && timeToUpdate >= 0.25f && pipeline.getTrained())
 	//{
 	//	timeToUpdate = 0;
@@ -234,19 +230,12 @@ void ofApp::drawGui(ofEventArgs &args)
 	}
 	rotate(coordinates.begin(), coordinates.begin() + 25, coordinates.end());
 	auto bodies = kinect.getBodySource()->getBodies();
+	
 	for (auto body : bodies)
 	{
 		if (body.joints.size() == 25)
 		{
-			if (originalLookalike == oldOriginalLookalike)
-			{
-				index++;
-				if (index > 500)
-				{
-					killProcess();
-					startProcess();
-				}
-			}
+			
 			int index = 0;
 			for (auto joint : body.joints)
 			{
@@ -412,10 +401,40 @@ void ofApp::draw()
 	{
 		rotate(coordinates.begin(), coordinates.begin() + 25, coordinates.end());
 		auto bodies = kinect.getBodySource()->getBodies();
+	/*	if (bodies.size() == 0)
+		{
+			killProcess();
+			startProcess();
+			timeElapsedSinceBug = 0;
+		}
+		else
+		{
+			timeElapsedSinceBug += ofGetLastFrameTime();
+			if (timeElapsedSinceBug > TIMETORESET)
+			{
+				killProcess();
+				startProcess();
+				timeElapsedSinceBug = 0;
+			}
+		}*/
+		
 		for (auto body : bodies)
 		{
 			if (body.joints.size() == 25)
 			{
+				if (originalLookalike == oldOriginalLookalike)
+				{
+					indexStaySame++;
+					if (indexStaySame > 1000)
+					{
+						killProcess();
+						startProcess();
+						indexStaySame = 0;
+					}
+				}
+				else
+					indexStaySame = 0;
+				oldOriginalLookalike = originalLookalike;
 				int index = 0;
 				for (auto joint : body.joints)
 				{
