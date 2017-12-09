@@ -45,7 +45,7 @@ void ofApp::startProcess()
 	//// Close process and thread handles. 
 	//CloseHandle(pi.hProcess);
 	//CloseHandle(pi.hThread);
-	system("D:\\of_v0.9.8_vs_release\\apps\\myApps\\BodyFail\\bin\\data\\Restart.bat");
+	system("E:\\of_v0.9.8_vs_release\\apps\\myApps\\BodyFail\\bin\\data\\Restart.bat");
 }
 
 //--------------------------------------------------------------
@@ -183,15 +183,7 @@ void ofApp::update(){
 			lookalike += clipCustom(progression_speed, 0, 1) / (3 + (1 - lookalike) * 5);
 		oldLookalike = lookalike;
 	}
-	if (originalLookalike == oldOriginalLookalike)
-	{
-		index++;
-		if (index > 500)
-		{
-			killProcess();
-			startProcess();
-		}
-	}
+	
 	else
 		index = 0;
 	oldOriginalLookalike = originalLookalike;
@@ -246,6 +238,15 @@ void ofApp::drawGui(ofEventArgs &args)
 	{
 		if (body.joints.size() == 25)
 		{
+			if (originalLookalike == oldOriginalLookalike)
+			{
+				index++;
+				if (index > 500)
+				{
+					killProcess();
+					startProcess();
+				}
+			}
 			int index = 0;
 			for (auto joint : body.joints)
 			{
