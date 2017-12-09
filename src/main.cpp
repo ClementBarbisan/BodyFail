@@ -10,7 +10,7 @@ int main(){
 	settings.width = 1280;
 	settings.height = 1024;
 	settings.monitor = 0;
-	//settings.multiMonitorFullScreen = true;
+	settings.multiMonitorFullScreen = true;
 	if (FULLSCREEN)
 		settings.windowMode = OF_FULLSCREEN;
 	else
