@@ -13,7 +13,7 @@ int clipCustom(int n, int lower, int upper) {
 void ofApp::killProcess()
 {
 	int retval = ::_tsystem(_T("taskkill /F /T /IM eyw_mobile_runtime.exe"));
-	int retval = ::_tsystem(_T("taskkill /F /T /IM Launcher.exe"));
+	retval = ::_tsystem(_T("taskkill /F /T /IM Launcher.exe"));
 }
 
 void ofApp::startProcess()
@@ -112,7 +112,6 @@ void ofApp::setup(){
 
 //--------------------------------------------------------------
 void ofApp::update(){
-	return;
 	kinect.update();
 	ofHideCursor();
 	//timeToUpdate += ofGetLastFrameTime();
@@ -276,7 +275,6 @@ void ofApp::drawGui(ofEventArgs &args)
 //--------------------------------------------------------------
 void ofApp::draw()
 {
-	return;
 	//framebuffer[0].begin();
 	stringstream ss;
 	if (lookalike <= lookalikeMin)
