@@ -1,4 +1,10 @@
 #include "ofApp.h"
+#include <windows.h>
+#include <process.h>
+#include <Tlhelp32.h>
+#include <winbase.h>
+#include <string.h>
+#include <Psapi.h>
 
 int clipCustom(int n, int lower, int upper) {
 	return std::max(lower, std::min(n, upper));
@@ -6,32 +12,8 @@ int clipCustom(int n, int lower, int upper) {
 
 void ofApp::killProcess()
 {
-	//const int maxProcIds = 1024;
-	//DWORD procList[maxProcIds];
-	//DWORD procCount;
-	//wchar_t* exeName = L"Launcher.exe";
-	//wchar_t processName[MAX_PATH];
-	//LPWSTR process = processName;
-	//// get the process by name
-	//if (!EnumProcesses(procList, sizeof(procList), &procCount))
-	//	return;
-
-	//// convert from bytes to processes
-	//procCount = procCount / sizeof(DWORD);
-
-	//// loop through all processes
-	//for (DWORD procIdx = 0; procIdx<procCount; procIdx++)
-	//{
-	//	// get a handle to the process
-	//	HANDLE procHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, procList[procIdx]);
-	//	// get the process name
-	//	GetProcessImageFileName(procHandle, processName, sizeof(processName));
-	//	// terminate all pocesses that contain the name
-	//	if (wcsstr(processName, exeName))
-	//		TerminateProcess(procHandle, 0);
-	//	CloseHandle(procHandle);
-	//}
-	systhread.stopThread();
+	int retval = ::_tsystem(_T("taskkill /F /T /IM eyw_mobile_runtime.exe"));
+	int retval = ::_tsystem(_T("taskkill /F /T /IM Launcher.exe"));
 }
 
 void ofApp::startProcess()
@@ -63,9 +45,7 @@ void ofApp::startProcess()
 	//// Close process and thread handles. 
 	//CloseHandle(pi.hProcess);
 	//CloseHandle(pi.hThread);
-	string cmd = "D:\Program Files (x86)\EyesWeb XMI 5.7.2.0\body_fail\Launcher.exe";
-	systhread.setup(cmd);
-	systhread.startThread();
+	system("D:\\of_v0.9.8_vs_release\\apps\\myApps\\BodyFail\\bin\\data\\Restart.bat");
 }
 
 //--------------------------------------------------------------
