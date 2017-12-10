@@ -54,5 +54,5 @@ void main()
     //vec3 color         = mix(intensity, vFragColor.rgb, vec3(1.0));
     //color              = mix(vec3(0.62), color, vec3(3.0));
 	//color *= 1.5;
-    vFragColor       = vec4 (0.75);
+    vFragColor       = vec4 (0.75, 0.75, 0.75, 0.5);
 }

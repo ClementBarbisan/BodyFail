@@ -393,7 +393,7 @@ void ofApp::draw()
 	framebuffer.draw(1280, 0);
 	framebuffer.begin();
 	ofFill();
-	ofSetColor(0, 0, 0, 20 + 30 * lookalike);
+	ofSetColor(0, 0, 0, 10 + 20 * lookalike);
 	ofDrawRectangle(0, 0, 1280, 1024);
 	framebuffer.end();
 	maxBuffer = 0;
@@ -401,7 +401,7 @@ void ofApp::draw()
 	{
 		rotate(coordinates.begin(), coordinates.begin() + 25, coordinates.end());
 		auto bodies = kinect.getBodySource()->getBodies();
-	/*	if (bodies.size() == 0)
+		if (bodies.size() == 0)
 		{
 			killProcess();
 			startProcess();
@@ -416,7 +416,7 @@ void ofApp::draw()
 				startProcess();
 				timeElapsedSinceBug = 0;
 			}
-		}*/
+		}
 		
 		for (auto body : bodies)
 		{
