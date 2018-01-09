@@ -8,28 +8,10 @@
 
 #include "ofMain.h"
 #include "ofxKinectForWindows2.h"
-#include "ofxFontStash2.h"
 #include "ofxOsc.h"
 #include <random>
 #include <algorithm>
 
-
-class SystemThread : public ofThread 
-{
-
-public:
-	string cmd;
-
-	void setup(string _cmd) {
-		this->cmd = _cmd;
-	}
-
-	void threadedFunction() {
-		if (isThreadRunning()) {
-			system(cmd.c_str());
-		}
-	};
-};
 
 class ofApp : public ofBaseApp{
 
@@ -95,5 +77,4 @@ class ofApp : public ofBaseApp{
 		float originalLookalike = 0.0;
 		int indexStaySame = 0;
 		float timeElapsedSinceBug = 0;
-		SystemThread systhread;
 };

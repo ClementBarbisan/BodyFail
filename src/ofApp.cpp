@@ -218,10 +218,12 @@ void ofApp::drawGui(ofEventArgs &args)
 		{
 			if ((i + errorIndex) % 2 == 0)
 				//font.drawFormatted("..yrteR", 200, 10 * i + 10);
-				trueTypeFont.drawString("..yrteR", 200, 10 * i + 10);
+				//trueTypeFont.drawString("..yrteR", 200, 10 * i + 10);
+				ofDrawBitmapString("Retry...", 200, 10 * i + 10);
 			else
 				//font.drawFormatted("detpurroc eroC : tluaF noitatnemgeS", 200, 10 * i + 10);
-				trueTypeFont.drawString("detpurroc eroC : tluaF noitatnemgeS", 200, 10 * i + 10);
+				//trueTypeFont.drawString("detpurroc eroC : tluaF noitatnemgeS", 200, 10 * i + 10);
+				ofDrawBitmapString("Segmentation Fault : Core corrupted", 200, 10 * i + 10);
 		}
 		errorIndex++;
 		if (errorIndex == 200)
@@ -244,7 +246,7 @@ void ofApp::drawGui(ofEventArgs &args)
 				if (index <= 25)
 				{
 					coordinates[174 + index] = stream.str();
-					reverse(coordinates[174 + index].begin(), coordinates[174 + index].end());
+					//reverse(coordinates[174 + index].begin(), coordinates[174 + index].end());
 				}
 				maxBuffer = MAX(abs(joint.second.getPosition().x), abs(joint.second.getPosition().y));
 				maxBuffer = MAX(maxBuffer, abs(joint.second.getPosition().z));
@@ -258,7 +260,8 @@ void ofApp::drawGui(ofEventArgs &args)
 	for (int i = 0; i < 100; i++)
 	{
 		//font.drawFormatted(coordinates[i], 200, 10 * i + 10);
-		trueTypeFont.drawString(coordinates[i], 200, 10 * i + 10);
+		//trueTypeFont.drawString(coordinates[i], 200, 10 * i + 10);
+		ofDrawBitmapString(coordinates[i], 200, 10 * i + 10);
 	}
 }
 
@@ -279,7 +282,7 @@ void ofApp::draw()
 				{
 					int index = 0;
 					stringstream url;
-					url << "http://bodyfail.com/addSample?";
+					url << "https://bodyfail.com/addSample?";
 					for (auto joint : body.joints) 
 					{
 						if (index < 24)
@@ -322,19 +325,23 @@ void ofApp::draw()
 				{
 					if ((i + errorIndex) % 2 == 0)
 						//font.drawFormatted("..yrteR", 200, 10 * i + 10);
-						trueTypeFont.drawString("..yrteR", 1400, 10 * i + 10);
+						//trueTypeFont.drawString("..yrteR", 200, 10 * i + 10);
+						ofDrawBitmapString("Retry...", 1400, 10 * i + 10);
 					else
 						//font.drawFormatted("detpurroc eroC : tluaF noitatnemgeS", 200, 10 * i + 10);
-						trueTypeFont.drawString("detpurroc eroC : tluaF noitatnemgeS", 1400, 10 * i + 10);
+						//trueTypeFont.drawString("detpurroc eroC : tluaF noitatnemgeS", 200, 10 * i + 10);
+						ofDrawBitmapString("Segmentation Fault : Core corrupted", 1400, 10 * i + 10);
 				}
 				else
 				{
 					if ((i + errorIndex) % 2 == 0)
 						//font.drawFormatted("..yrteR", 200, 10 * i + 10);
-						trueTypeFont.drawString("..yrteR", 1400 + ofGetWidth() / 2, 10 * (i - 100) + 10);
+						//trueTypeFont.drawString("..yrteR", 200, 10 * i + 10);
+						ofDrawBitmapString("Retry...", 1400 + ofGetWidth() / 2, 10 * (i - 100) + 10);
 					else
 						//font.drawFormatted("detpurroc eroC : tluaF noitatnemgeS", 200, 10 * i + 10);
-						trueTypeFont.drawString("detpurroc eroC : tluaF noitatnemgeS", 1400 + ofGetWidth() / 2, 10 * (i - 100) + 10);
+						//trueTypeFont.drawString("detpurroc eroC : tluaF noitatnemgeS", 200, 10 * i + 10);
+						ofDrawBitmapString("Segmentation Fault : Core corrupted", 1400 + ofGetWidth() / 2, 10 * (i - 100) + 10);
 				}
 			}
 			errorIndex++;
@@ -443,7 +450,7 @@ void ofApp::draw()
 					if (index <= 25)
 					{
 						coordinates[174 + index] = stream.str();
-						reverse(coordinates[174 + index].begin(), coordinates[174 + index].end());
+						//reverse(coordinates[174 + index].begin(), coordinates[174 + index].end());
 					}
 					maxBuffer = MAX(abs(joint.second.getPosition().x), abs(joint.second.getPosition().y));
 					maxBuffer = MAX(maxBuffer, abs(joint.second.getPosition().z));
@@ -458,9 +465,9 @@ void ofApp::draw()
 		{
 			//font.drawFormatted(coordinates[i], 200, 10 * i + 10);
 			if (i < 101)
-				trueTypeFont.drawString(coordinates[i], 1400, 10 * i + 10);
+				ofDrawBitmapString(coordinates[i], 1400, 10 * i + 10);
 			else
-				trueTypeFont.drawString(coordinates[i], 1400 + ofGetWidth() / 2, 10 * (i - 100) + 10);
+				ofDrawBitmapString(coordinates[i], 1400 + ofGetWidth() / 2, 10 * (i - 100) + 10);
 		}
 	}
 	//framebufferFinal.end();
@@ -482,8 +489,8 @@ void ofApp::audioOut(float * output, int bufferSize, int nChannels)
 	{
 		if (phase > TWO_PI)
 			phase = 0;
-		output[i * nChannels] = buffer[i % 75] / maxBuffer * sin(phase);
-		output[i * nChannels + 1] = buffer[i % 75] / maxBuffer * sin(phase);
+		output[i * nChannels] = buffer[i % 75] / maxBuffer * sin(phase * lookalike);
+		output[i * nChannels + 1] = buffer[i % 75] / maxBuffer * sin(phase * lookalike);
 		phase += 0.05;
 	}
 }
