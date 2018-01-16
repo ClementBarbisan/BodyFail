@@ -5,9 +5,12 @@
 #define NOMULTIPLESCREEN true
 #define FULLSCREEN false
 #define TIMETORESET 30
+#define MACHINELEARNING true
+#define TOTALTIME 10
 
 #include "ofMain.h"
 #include "ofxKinectForWindows2.h"
+#include "ofxGrt.h"
 #include "ofxOsc.h"
 #include <random>
 #include <algorithm>
@@ -77,4 +80,6 @@ class ofApp : public ofBaseApp{
 		float originalLookalike = 0.0;
 		int indexStaySame = 0;
 		float timeElapsedSinceBug = 0;
+		GestureRecognitionPipeline pipeline;
+		GRT::VectorFloat predictVector;
 };

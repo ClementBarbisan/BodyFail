@@ -63,7 +63,8 @@ void ofApp::setupGui()
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-	startProcess();
+	if (!MACHINELEARNING)
+		startProcess();
 	kinect.open();
 	kinect.initDepthSource();
 	kinect.initColorSource();
@@ -81,23 +82,49 @@ void ofApp::setup(){
 	style.fontSize = 12;
 	font.addStyle("backFontStyle", style);
 	font.setDefaultStyle("backFontStyle");*/
+	if (!MACHINELEARNING)
+	{
+		oscReceiver.setup(8532);
+		oscSender.setup("127.0.0.1", 8534);
+		oscMessage.clear();
+		oscMessage.setAddress("/modality");
+		oscMessage.addIntArg(behaviour);
+		oscSender.sendMessage(oscMessage);
+		oscMessage.clear();
+		oscMessage.setAddress("/parameters");
+		oscMessage.addFloatArg(speedWeight);
+		oscMessage.addFloatArg(positionWeight);
+		oscMessage.addFloatArg(globalWeight);
+		oscMessage.addFloatArg(globalWeight / 2);
+		oscMessage.addFloatArg(globalWeight / 4);
+		oscMessage.addFloatArg(maximumValue);
+		oscSender.sendMessage(oscMessage);
+	}
+	else
+	{
+		//pipeline.load("pipeline_data.grt"); //The MLP algorithm directly supports multi-dimensional outputs, so MDRegression is not required here
+
+		unsigned int numInputNeurons = 75;
+		unsigned int numHiddenNeurons = 128; //For more complex problems, increase the number of hidden units
+		unsigned int numOutputNeurons = 4;
+		MLP mlp;
+		mlp.init(numInputNeurons, numHiddenNeurons, numOutputNeurons, Neuron::LINEAR, Neuron::TANH, Neuron::TANH);
+
+		//Set the training settings
+		mlp.setMaxNumEpochs(1000); //This sets the maximum number of epochs (1 epoch is 1 complete iteration of the training data) that are allowed
+		mlp.setMinChange(1.0e-10); //This sets the minimum change allowed in training error between any two epochs
+		mlp.setLearningRate(0.2); //This sets the rate at which the learning algorithm updates the weights of the neural network
+		mlp.setMomentum(0.5);
+		mlp.setNumRandomTrainingIterations(2); //This sets the number of times the MLP will be trained, each training iteration starts with new random values
+		mlp.setUseValidationSet(true); //This sets aside a small portiion of the training data to be used as a validation set to mitigate overfitting
+		mlp.setValidationSetSize(40); //Use 20% of the training data for validation during the training phase
+		mlp.setRandomiseTrainingOrder(true); //Randomize the order of the training data so that the training algorithm does not bias the training
+		mlp.enableScaling(true); //Learning works much better if the training and prediction data is first scaled to a common range (i.e. [0.0 1.0])
+
+		pipeline << mlp; //The MLP algorithm directly supports multi-dimensional outputs, so MDRegression is not required here
+		pipeline.load(ofToDataPath("pipeline_data.grt"));
+	}
 	soundStream.setup(this, 2, 0, 44100, 512, 4);
-	oscReceiver.setup(8532);
-	oscSender.setup("127.0.0.1", 8534);
-	oscMessage.clear();
-	oscMessage.setAddress("/modality");
-	oscMessage.addIntArg(behaviour);
-	oscSender.sendMessage(oscMessage);
-	oscMessage.clear();
-	oscMessage.setAddress("/parameters");
-	oscMessage.addFloatArg(speedWeight);
-	oscMessage.addFloatArg(positionWeight);
-	oscMessage.addFloatArg(globalWeight);
-	oscMessage.addFloatArg(globalWeight / 2);
-	oscMessage.addFloatArg(globalWeight / 4);
-	oscMessage.addFloatArg(maximumValue);
-	oscSender.sendMessage(oscMessage);
-	//pipeline.load("pipeline_data.grt"); //The MLP algorithm directly supports multi-dimensional outputs, so MDRegression is not required here
 	buffer = new float[75];
 	for (int i = 0; i < 75; i++)
 		buffer[i] = 1;
@@ -125,63 +152,112 @@ void ofApp::update(){
 				lookalike -= 0.001;
 		}
 	}
-	if (resetDelayer > 5.0f)
+	if (!MACHINELEARNING)
 	{
-		oscMessage.clear();
-		oscMessage.setAddress("/reset");
-		oscMessage.addIntArg(1);
-		oscSender.sendMessage(oscMessage);
-	}
-	else if (lookalike < lookalikeMin)
-		return;
-	resetDelayer = 0;
-	while (oscReceiver.hasWaitingMessages())
-	{
-		oscReceiver.getNextMessage(oscMessage);
-		if (oscMessage.getAddress() == "/progress_speed")
+		if (resetDelayer > 5.0f)
 		{
-			progression_speed = oscMessage.getArgAsFloat(0);
+			oscMessage.clear();
+			oscMessage.setAddress("/reset");
+			oscMessage.addIntArg(1);
+			oscSender.sendMessage(oscMessage);
 		}
-		if (oscMessage.getAddress() == "/progress")
+		else if (lookalike < lookalikeMin)
+			return;
+		resetDelayer = 0;
+		while (oscReceiver.hasWaitingMessages())
 		{
-			lookalike = 1.0 - oscMessage.getArgAsFloat(0);
-			originalLookalike = oscMessage.getArgAsFloat(0);
+			oscReceiver.getNextMessage(oscMessage);
+			if (oscMessage.getAddress() == "/progress_speed")
+			{
+				progression_speed = oscMessage.getArgAsFloat(0);
+			}
+			if (oscMessage.getAddress() == "/progress")
+			{
+				lookalike = 1.0 - oscMessage.getArgAsFloat(0);
+				originalLookalike = oscMessage.getArgAsFloat(0);
+			}
+			//else if (oscMessage.getAddress() == "/progress_speed")
+				//progression_speed = oscMessage.getArgAsFloat(0);
+			//lookalike = 1.0 -;
+			//ofLog() << lookalike;
+			//ofLog() << "Treated = " << ((lookalike)*(((3 - (lookalike*(2 - lookalike))) - (lookalike))));
 		}
-		//else if (oscMessage.getAddress() == "/progress_speed")
-			//progression_speed = oscMessage.getArgAsFloat(0);
-		//lookalike = 1.0 -;
-		//ofLog() << lookalike;
-		//ofLog() << "Treated = " << ((lookalike)*(((3 - (lookalike*(2 - lookalike))) - (lookalike))));
+		if (lookalike > 0.75 || lookalike < 0.1)
+		{
+			oscMessage.clear();
+			oscMessage.setAddress("/parameters");
+			oscMessage.addFloatArg(speedWeight * 1.5);
+			oscMessage.addFloatArg(positionWeight * 1.5);
+			oscMessage.addFloatArg(globalWeight);
+			oscMessage.addFloatArg(globalWeight / 4);
+			oscMessage.addFloatArg(globalWeight / 2);
+			oscMessage.addFloatArg(maximumValue);
+			oscSender.sendMessage(oscMessage);
+		}
+		else
+		{
+			oscMessage.clear();
+			oscMessage.setAddress("/parameters");
+			oscMessage.addFloatArg(speedWeight);
+			oscMessage.addFloatArg(positionWeight);
+			oscMessage.addFloatArg(globalWeight);
+			oscMessage.addFloatArg(globalWeight / 2);
+			oscMessage.addFloatArg(globalWeight / 4);
+			oscMessage.addFloatArg(maximumValue);
+			oscSender.sendMessage(oscMessage);
+		}
+		if (lookalike > lookalikeMin)
+		{
+			if (oldLookalike != lookalike)
+				lookalike += clipCustom(progression_speed, 0, 1) / (3 + (1 - lookalike) * 5);
+			oldLookalike = lookalike;
+		}
 	}
-	if (lookalike > 0.75 || lookalike < 0.1)
+	else if (kinect.isFrameNew() && pipeline.getTrained())
 	{
-		oscMessage.clear();
-		oscMessage.setAddress("/parameters");
-		oscMessage.addFloatArg(speedWeight * 1.5);
-		oscMessage.addFloatArg(positionWeight * 1.5);
-		oscMessage.addFloatArg(globalWeight);
-		oscMessage.addFloatArg(globalWeight / 4);
-		oscMessage.addFloatArg(globalWeight / 2);
-		oscMessage.addFloatArg(maximumValue);
-		oscSender.sendMessage(oscMessage);
-	}
-	else
-	{
-		oscMessage.clear();
-		oscMessage.setAddress("/parameters");
-		oscMessage.addFloatArg(speedWeight);
-		oscMessage.addFloatArg(positionWeight);
-		oscMessage.addFloatArg(globalWeight);
-		oscMessage.addFloatArg(globalWeight / 2);
-		oscMessage.addFloatArg(globalWeight / 4);
-		oscMessage.addFloatArg(maximumValue);
-		oscSender.sendMessage(oscMessage);
-	}
-	if (lookalike > lookalikeMin)
-	{
-		if (oldLookalike != lookalike)
-			lookalike += clipCustom(progression_speed, 0, 1) / (3 + (1 - lookalike) * 5);
-		oldLookalike = lookalike;
+		if (resetDelayer > 5.0f)
+		{
+			lookalike = 1.0f;
+		}
+		else if (lookalike < lookalikeMin)
+			return;
+		resetDelayer = 0;
+			/*if (predictVector.size() >= 375)
+			{
+			std::rotate(predictVector.begin(), predictVector.begin() + 75, predictVector.end());
+			for (int i = 0; i < 75; i++)
+			predictVector.pop_back();
+			}*/
+			predictVector.clear();
+			auto bodies = kinect.getBodySource()->getBodies();
+			for (auto body : bodies) {
+				if (body.joints.size() == 25)
+				{
+					for (auto joint : body.joints) {
+						predictVector.push_back(joint.second.getPosition().x);
+						predictVector.push_back(joint.second.getPosition().y);
+						predictVector.push_back(joint.second.getPosition().z);
+						//ofLog() << joint.first << " " << joint.second.getPosition();
+						//now do something with the joints
+					}
+					break;
+				}
+			}
+			if (predictVector.size() == 75)
+			{
+				VectorFloat dataResult;
+				if (pipeline.predict(predictVector))
+				{
+					dataResult = pipeline.getRegressionData();
+					if (lookalike < 1)
+						lookalike += ofGetLastFrameTime() * (CLAMP(dataResult[0], 0, 1) / TOTALTIME);
+					if (lookalike > 0)
+					{
+						lookalike -= ofGetLastFrameTime() * (CLAMP(dataResult[1], 0, 1) / TOTALTIME / 2);
+					}
+					lookalike = CLAMP(lookalike, 0, 1);
+				}
+			}
 	}
 	//if (kinect.isFrameNew() && timeToUpdate >= 0.25f && pipeline.getTrained())
 	//{
