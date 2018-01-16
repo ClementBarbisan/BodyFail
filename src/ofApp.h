@@ -3,7 +3,7 @@
 #define USE_PROGRAMMABLE_PIPELINE 1
 #define MANUAL false
 #define NOMULTIPLESCREEN true
-#define FULLSCREEN false
+#define FULLSCREEN TRUE
 #define TIMETORESET 30
 #define MACHINELEARNING true
 #define TOTALTIME 10
