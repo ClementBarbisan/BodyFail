@@ -361,7 +361,7 @@ void ofApp::draw()
 						//now do something with the joints
 						index++;
 					}
-					url << "&place=EDF";
+					url << "&place=Louvre";
 					if (index >= 25)
 					{
 						ofLoadURL(url.str());
@@ -423,7 +423,7 @@ void ofApp::draw()
 	ofTexture & texture = kinect.getBodyIndexSource()->getTexture();
 	framebufferMask.begin();
 	ofEnableAlphaBlending();
-	ofSetColor(255, 255, 255, 10 + 20 * lookalike);
+	ofSetColor(255, 255, 255, 10);
 	texture.draw(0, 0);
 	ofDisableAlphaBlending();
 	framebufferMask.end();
