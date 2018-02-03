@@ -6,6 +6,7 @@ in Vertex
 {
 	vec2 vTexCoord;
 	float vKeep;
+	vec4 idxColor;
 } vertex[];
 
 uniform mat4 projectionMatrix;
@@ -14,6 +15,7 @@ uniform mat4 modelViewProjectionMatrix;
 uniform float lookalike;
 out float vKeep;
 out vec2 vTexCoord;
+out vec4 idxColor;
 //out float zPos;
 out vec4 Position_worldspace;
 out vec4 Normal_cameraspace;
@@ -43,15 +45,16 @@ void main()
 	vKeep = vertex[0].vKeep;
 	if (vKeep == 0)
 		return;
+	idxColor = vertex[0].idxColor;
 	// Position of the vertex, in worldspace : M * position
 	Position_worldspace = modelViewMatrix * gl_in[0].gl_Position;
 	float value = EaseInOut(lookalike);
 	//zPos = sqrt(( modelViewProjectionMatrix * gl_in[0].gl_Position).z) / 20.0;
-	vec4 pos = vec4((-0.5 + rand(gl_in[0].gl_Position.x, time)) / (30.0 * value) + (cos(clampDegree(time) + (rand(gl_in[0].gl_Position.x, gl_in[0].gl_Position.y) * 5)) / 10), (-0.5 + rand(gl_in[0].gl_Position.y, time)) / (30.0 * value) + (sin(clampDegree(time) + (rand(gl_in[0].gl_Position.x, gl_in[0].gl_Position.y) * 5)) / 10), (-0.5 + rand(gl_in[0].gl_Position.z, time)) / (30.0 * value) + (cos(clampDegree(time) + (rand(gl_in[0].gl_Position.x, gl_in[0].gl_Position.y) * 5)) / 10), 1.0);
+	vec4 pos = vec4((-0.5 + rand(gl_in[0].gl_Position.x, time)) / (50.0 * (value)) + (cos(clampDegree(time)* (1.0 - value) + (rand(gl_in[0].gl_Position.x, time) * 5 * (1.0 - value))) / 10), (-0.5 + rand(gl_in[0].gl_Position.y, time)) / (50.0 * (value)) + (sin(clampDegree(time)* (1.0 - value) + (rand(gl_in[0].gl_Position.y, time) * 5 * (1.0 - value))) / 10), (-0.5 + rand(gl_in[0].gl_Position.z, time)) / (50.0 * (value)) + (cos(clampDegree(time)* (1.0 - value) + (rand(gl_in[0].gl_Position.z, time) * 5 * (1.0 - value))) / 10), 1.0);
 	Position_worldspace = modelViewMatrix * (gl_in[0].gl_Position + pos);
 	vec4 zRand = vec4(((-1.0 + rand((gl_in[0].gl_Position+vec4(size,size / 2,size / 2,0.0)).x, time)) / 10.0) * (1.0 - value),((-1.0 + rand((gl_in[0].gl_Position+vec4(size,size / 2,size / 2,0.0)).y, time)) / 10.0) * (1.0 - value),((-1 + rand((gl_in[0].gl_Position+vec4(size,size / 2,size / 2,0.0)).z, time)) / 10.0) * (1.0 - value),1.0);
 	vec4 normalExp = vec4(0.0);
-	size = clamp((rand(float(gl_PrimitiveIDIn), time) / 100.0f) * (1.0 - lookalike), 0.002, 1.0);
+	size = clamp((rand(float(gl_PrimitiveIDIn), time) / 100.0f) * (1.0 - lookalike), 0.005, 1.0);
 	vTexCoord = vertex[0].vTexCoord;
 	//left
 	//light = vec3(1.0);
@@ -60,11 +63,11 @@ void main()
 	Normal_cameraspace = (modelViewMatrix * vec4(vertexNormal_modelspace, 1.0));
 	gl_Position = modelViewProjectionMatrix * (gl_in[0].gl_Position+vec4(size,size / 2,size / 2,0.0) + pos + zRand + normalExp);
 	EmitVertex();
-	gl_Position = modelViewProjectionMatrix * (gl_in[0].gl_Position+vec4(size,-size / 2,-size / 2,0.0) + pos + normalExp);
+	gl_Position = modelViewProjectionMatrix * (gl_in[0].gl_Position+vec4(size,-size / 2,-size / 2,0.0) + pos + zRand + normalExp);
 	EmitVertex();
-	gl_Position = modelViewProjectionMatrix * (gl_in[0].gl_Position+vec4(0.0,0.0,size,0.0) + pos + normalExp);
+	gl_Position = modelViewProjectionMatrix * (gl_in[0].gl_Position+vec4(0.0,0.0,size,0.0) + pos + zRand + normalExp);
 	EmitVertex();
-	gl_Position = modelViewProjectionMatrix * (gl_in[0].gl_Position+vec4(0.0,-size,0.0,0.0) + pos + normalExp);
+	gl_Position = modelViewProjectionMatrix * (gl_in[0].gl_Position+vec4(0.0,-size,0.0,0.0) + pos + zRand + normalExp);
 	EmitVertex();
 	EndPrimitive();
 	//right
@@ -88,7 +91,7 @@ void main()
 	EmitVertex();
 	gl_Position = modelViewProjectionMatrix * (gl_in[0].gl_Position+vec4(0.0,size,0.0,0.0) + pos + normalExp);
 	EmitVertex();
-	gl_Position = modelViewProjectionMatrix * (gl_in[0].gl_Position+vec4(0.0,0.0,size,0.0) + pos + normalExp);
+	gl_Position = modelViewProjectionMatrix * (gl_in[0].gl_Position+vec4(0.0,0.0,size,0.0) + pos + zRand + normalExp);
 	EmitVertex();
 	gl_Position = modelViewProjectionMatrix * (gl_in[0].gl_Position+vec4(size,size / 2,size / 2,0.0) + pos + zRand + normalExp);
 	EmitVertex();
@@ -97,13 +100,13 @@ void main()
 	//light = vec3(0.2);
 	vertexNormal_modelspace = -normalize(cross(vec3(0.0,-size,0.0) - vec3(-size,-size / 2,-size / 2), vec3(size,-size / 2,-size / 2) - vec3(-size,-size / 2,-size / 2)));
 	Normal_cameraspace = (modelViewMatrix * vec4(vertexNormal_modelspace, 1.0));
-	gl_Position = modelViewProjectionMatrix * (gl_in[0].gl_Position+vec4(-size,-size / 2,-size / 2,0.0) + pos + normalExp);
+	gl_Position = modelViewProjectionMatrix * (gl_in[0].gl_Position+vec4(-size,-size / 2,-size / 2,0.0) + pos  + zRand + normalExp);
 	EmitVertex();
-	gl_Position = modelViewProjectionMatrix * (gl_in[0].gl_Position+vec4(0.0,-size,0.0,0.0) + pos + normalExp);
+	gl_Position = modelViewProjectionMatrix * (gl_in[0].gl_Position+vec4(0.0,-size,0.0,0.0) + pos + zRand + normalExp);
 	EmitVertex();
 	gl_Position = modelViewProjectionMatrix * (gl_in[0].gl_Position+vec4(0.0,0.0,-size,0.0) + pos + normalExp);
 	EmitVertex();
-	gl_Position = modelViewProjectionMatrix * (gl_in[0].gl_Position+vec4(size,-size / 2,-size / 2,0.0) + pos + normalExp);
+	gl_Position = modelViewProjectionMatrix * (gl_in[0].gl_Position+vec4(size,-size / 2,-size / 2,0.0) + pos + zRand + normalExp);
 	EmitVertex();
 	EndPrimitive();
 	//front
@@ -114,7 +117,7 @@ void main()
 	EmitVertex();
 	gl_Position = modelViewProjectionMatrix * (gl_in[0].gl_Position+vec4(0.0,size,0.0,0.0) + pos + normalExp);
 	EmitVertex();
-	gl_Position = modelViewProjectionMatrix * (gl_in[0].gl_Position+vec4(size,-size / 2,-size / 2,0.0) + pos + normalExp);
+	gl_Position = modelViewProjectionMatrix * (gl_in[0].gl_Position+vec4(size,-size / 2,-size / 2,0.0) + pos  + zRand + normalExp);
 	EmitVertex();
 	gl_Position = modelViewProjectionMatrix * (gl_in[0].gl_Position+vec4(0.0,0.0,-size,0.0) + pos + normalExp);
 	EmitVertex();
@@ -127,9 +130,9 @@ void main()
 	EmitVertex();
 	gl_Position = modelViewProjectionMatrix * (gl_in[0].gl_Position+vec4(-size,-size / 2,-size / 2,0.0) + pos + normalExp);
 	EmitVertex();
-	gl_Position = modelViewProjectionMatrix * (gl_in[0].gl_Position+vec4(0.0,0.0,size,0.0) + pos + normalExp);
+	gl_Position = modelViewProjectionMatrix * (gl_in[0].gl_Position+vec4(0.0,0.0,size,0.0) + pos + zRand + normalExp);
 	EmitVertex();
-	gl_Position = modelViewProjectionMatrix * (gl_in[0].gl_Position+vec4(0.0,-size,0.0,0.0) + pos + normalExp);
+	gl_Position = modelViewProjectionMatrix * (gl_in[0].gl_Position+vec4(0.0,-size,0.0,0.0) + pos + zRand + normalExp);
 	EmitVertex();
 	EndPrimitive();
 }

@@ -5,6 +5,7 @@ const vec3 LumCoeff = vec3 (0.2125, 0.7154, 0.0721);
 uniform sampler2DRect uColorTex;
 uniform sampler2DRect depthTex;
 uniform int uWidth;
+uniform int uHeight;
 uniform mat4 projectionMatrix;
 uniform mat4 modelViewMatrix;
 uniform mat4 modelViewProjectionMatrix;
@@ -15,12 +16,13 @@ in vec2 vTexCoord;
 in vec4 Position_worldspace;
 in vec4 Normal_cameraspace;
 in vec4 LightDirection_cameraspace;
+in vec4 idxColor;
 
 out vec4 vFragColor;
 
 void main()
 {
-	if (vKeep == 0.0) {
+	if (vKeep == 0.0 || mod(floor(vTexCoord.y * uHeight), 50) != 0) {
 		discard;
 	}
 
@@ -58,5 +60,6 @@ void main()
     vec3 intensity     = vec3 (dot(vFragColor.rgb, LumCoeff));
     vec3 color         = mix(intensity, vFragColor.rgb, vec3(1.0));
     color              = mix(vec3(0.62), color, vec3(3));
-    vFragColor       = vec4 (color, 1.0);
+    vFragColor       = vec4 (1.0 * vec3(1.0 - idxColor.x,1.0 - idxColor.y,1.0 - idxColor.z), 1.0);
+	vFragColor       = vec4 (1.0);
 }

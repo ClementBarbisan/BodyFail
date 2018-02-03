@@ -74,6 +74,7 @@ void ofApp::setup(){
 	raytracing.load("raytracer.vert", "raytracer.frag", "raytracer.geom");
 	//rng = default_random_engine{};
 	trueTypeFont.loadFont("backFont.ttf", 12);
+	
 	/*font.setup(false);
 	font.addFont("backFont", "backFont.ttf");
 	ofxFontStash2::Style style;
@@ -134,7 +135,23 @@ void ofApp::setup(){
 	initialLookalike = lookalike;
 	initialLookalikeTarget = lookalikeTarget;
 	framebuffer.allocate(1280, 1024);
-	//framebufferFinal.allocate(2560, 1024);
+	framebufferMask.allocate(1920, 1080);
+	light.setup();
+	light.enable();
+	//light.setAreaLight(100, 100);
+	ofSetGlobalAmbientColor(ofColor::white);
+	light.setAmbientColor(ofColor::blueSteel);
+	light.setDiffuseColor(ofColor::ghostWhite);
+	light.setSpecularColor(ofColor::aqua);
+	light.setPosition(ofVec3f(0.0, 0.0, 0.0));
+	materialPlane.setAmbientColor(ofFloatColor(0.5, 0.5, 0.5, 1.0));
+	materialPlane.setDiffuseColor(ofFloatColor(0.8, 0.8, 0.8, 1.0));
+	materialPlane.setSpecularColor(ofFloatColor(0.8, 0.8, 0.8, 1.0));
+	plane.set(20000, 20000, 2, 2);
+	plane.move(ofVec3f(0, 0, -10.0));
+	materialPlane.setShininess(10);
+	//ofEnableDepthTest();
+	ofEnableLighting();
 }
 
 //--------------------------------------------------------------
@@ -259,30 +276,6 @@ void ofApp::update(){
 				}
 			}
 	}
-	//if (kinect.isFrameNew() && timeToUpdate >= 0.25f && pipeline.getTrained())
-	//{
-	//	timeToUpdate = 0;
-	//	if (predictVector.size() >= 375)
-	//	{
-	//		std::rotate(predictVector.begin(), predictVector.begin() + 75, predictVector.end());
-	//		for (int i = 0; i < 75; i++)
-	//			predictVector.pop_back();
-	//	}
-	//	auto bodies = kinect.getBodySource()->getBodies();
-	//	for (auto body : bodies) {
-	//		for (auto joint : body.joints) {
-	//			predictVector.push_back(joint.second.getPosition().x);
-	//			predictVector.push_back(joint.second.getPosition().y);
-	//			predictVector.push_back(joint.second.getPosition().z);
-	//			//ofLog() << joint.first << " " << joint.second.getPosition();
-	//			//now do something with the joints
-	//		}
-	//	}
-	//	if (predictVector.size() >= 375)
-	//	{
-	//		pipeline.predict(predictVector);
-	//	}
-	//}
 }
 
 //-------------------------------------------------------------
@@ -344,7 +337,6 @@ void ofApp::drawGui(ofEventArgs &args)
 //--------------------------------------------------------------
 void ofApp::draw()
 {
-	//framebuffer[0].begin();
 	stringstream ss;
 	if (lookalike <= lookalikeMin)
 	{
@@ -427,22 +419,35 @@ void ofApp::draw()
 		return;
 	}
 	savedPosture = false;
-	//ofDisableDepthTest();
-	//ofBackgroundGradient(ofColor(50), ofColor::black, OF_GRADIENT_BAR);
+	ofDisableDepthTest();
+	ofTexture & texture = kinect.getBodyIndexSource()->getTexture();
+	framebufferMask.begin();
+	ofEnableAlphaBlending();
+	ofSetColor(255, 255, 255, 10 + 20 * lookalike);
+	texture.draw(0, 0);
+	ofDisableAlphaBlending();
+	framebufferMask.end();
 	framebuffer.begin();	
 	cam.begin();
 	cam.setPosition(0.0, 0.0, 0.0);
+	
 	ofPushMatrix();
+	//materialPlane.begin();
+	//
+	//plane.draw();
+	//light.draw();
+
 	ofScale(100, 100, 100);
 	ofRotateY(180);
 	ofMesh mesh = kinect.getDepthSource()->getMesh(false, ofxKFW2::Source::Depth::PointCloudOptions::ColorCamera);
 	ofMesh meshWireframe = kinect.getDepthSource()->getMesh(true, ofxKFW2::Source::Depth::PointCloudOptions::ColorCamera);
-	ofTexture & texture = kinect.getBodyIndexSource()->getTexture();
 	ofTexture & colorTexture = kinect.getColorSource()->getTexture();
 	ofTexture & depthTexture = kinect.getDepthSource()->getTexture();
+	
 	shader.begin();
 	shader.setUniform1i("uWidth", kinect.getBodyIndexSource()->getWidth());
-	shader.setUniformTexture("uBodyIndexTex", texture, 1);
+	shader.setUniform1i("uHeight", kinect.getBodyIndexSource()->getHeight());
+	shader.setUniformTexture("uBodyIndexTex", framebufferMask.getTextureReference(), 1);
 	shader.setUniformTexture("depthTex", depthTexture, 3);
 	shader.setUniform1f("time", ofGetElapsedTimef());
 	shader.setUniformTexture("uColorTex", colorTexture, 2);
@@ -467,13 +472,16 @@ void ofApp::draw()
 	raytracing.setUniform1f("lookalike", lookalike);
 	meshWireframe.drawWireframe();
 	raytracing.end();
+	//materialPlane.end();
 	
 	ofPopMatrix();
 	cam.end();
+	
 	framebuffer.end();
-	//framebufferFinal.begin();
+	//ofDisableLighting();
 	framebuffer.draw(0, 0);
 	framebuffer.draw(1280, 0);
+	
 	framebuffer.begin();
 	ofFill();
 	ofSetColor(0, 0, 0, 10 + 20 * lookalike);
@@ -546,16 +554,9 @@ void ofApp::draw()
 				ofDrawBitmapString(coordinates[i], 1400 + ofGetWidth() / 2, 10 * (i - 100) + 10);
 		}
 	}
-	//framebufferFinal.end();
-	//framebufferFinal.draw(0, 0);
-	
-	/*framebufferFinal.begin();
-	ofFill();
-	ofSetColor(0, 0, 0, 255);
-	ofDrawRectangle(0, 0, 2560, 1024);
-	framebufferFinal.end();*/
 	ofSetWindowTitle(ofToString(ofGetFrameRate(), 2));
 }
+
 
 //--------------------------------------------------------------
 void ofApp::audioOut(float * output, int bufferSize, int nChannels)

@@ -43,6 +43,9 @@ class ofApp : public ofBaseApp{
 		ofShader shader;
 		ofShader raytracing;
 		vector<string> coordinates = vector<string>(200);
+		ofLight	light;
+		ofPlanePrimitive plane;
+		ofMaterial materialPlane;
 		//float timeToUpdate = 0;
 		//RegressionData trainingData;      		//This will store our training data
 		//GestureRecognitionPipeline pipeline;        //This is a wrapper for our regression and any pre/post processing modules 
@@ -54,7 +57,7 @@ class ofApp : public ofBaseApp{
 		float maxBuffer = 0;
 		string lookalikeString = "1.0";
 		ofFbo framebuffer;
-		ofFbo framebufferFinal;
+		ofFbo framebufferMask;
 		float lookalikeTarget = 1.0f;
 		float lookalike = 1.0f;
 		float initialLookalikeTarget = 1.0f;
