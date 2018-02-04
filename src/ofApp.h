@@ -6,7 +6,7 @@
 #define FULLSCREEN true
 #define TIMETORESET 30
 #define MACHINELEARNING true
-#define TOTALTIME 10
+#define TOTALTIME 5
 
 #include "ofMain.h"
 #include "ofxKinectForWindows2.h"

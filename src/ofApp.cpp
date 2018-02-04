@@ -424,7 +424,7 @@ void ofApp::draw()
 	ofTexture & texture = kinect.getBodyIndexSource()->getTexture();
 	framebufferMask.begin();
 	ofEnableAlphaBlending();
-	ofSetColor(255, 255, 255, 10);
+	ofSetColor(255, 255, 255, 5);
 	texture.draw(0, 0);
 	ofDisableAlphaBlending();
 	framebufferMask.end();
@@ -492,7 +492,7 @@ void ofApp::draw()
 	
 	framebuffer.begin();
 	ofFill();
-	ofSetColor(0, 0, 0, 20 + 40 * lookalike);
+	ofSetColor(0, 0, 0, 10 + 20 * lookalike);
 	ofDrawRectangle(0, 0, 1280, 1024);
 	framebuffer.end();
 	maxBuffer = 0;
