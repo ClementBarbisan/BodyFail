@@ -72,7 +72,8 @@ void ofApp::setup(){
 	kinect.initBodyIndexSource();
 	shader.load("bodyIndex.vert", "bodyIndex.frag", "bodyIndex.geom");
 	raytracing.load("raytracer.vert", "raytracer.frag", "raytracer.geom");
-	//rng = default_random_engine{};
+	contours.load("contours");
+	rng = default_random_engine{};
 	trueTypeFont.loadFont("backFont.ttf", 12);
 	
 	/*font.setup(false);
@@ -443,16 +444,6 @@ void ofApp::draw()
 	ofMesh meshWireframe = kinect.getDepthSource()->getMesh(true, ofxKFW2::Source::Depth::PointCloudOptions::ColorCamera);
 	ofTexture & colorTexture = kinect.getColorSource()->getTexture();
 	ofTexture & depthTexture = kinect.getDepthSource()->getTexture();
-	
-	shader.begin();
-	shader.setUniform1i("uWidth", kinect.getBodyIndexSource()->getWidth());
-	shader.setUniform1i("uHeight", kinect.getBodyIndexSource()->getHeight());
-	shader.setUniformTexture("uBodyIndexTex", framebufferMask.getTextureReference(), 1);
-	shader.setUniformTexture("depthTex", depthTexture, 3);
-	shader.setUniform1f("time", ofGetElapsedTimef());
-	shader.setUniformTexture("uColorTex", colorTexture, 2);
-	shader.setUniform1f("lookalike", lookalike);
-	mesh.draw();
 	vector<size_t> & indices = meshWireframe.getIndices();
 	//shuffle(meshWireframe.getIndices().begin(), meshWireframe.getIndices().end(), rng);
 	for (int i = 0; i < indices.size(); i += 4 + 100 * lookalike)
@@ -461,7 +452,6 @@ void ofApp::draw()
 		swap(indices[i], indices[random]);
 	}
 	meshWireframe.setMode(OF_PRIMITIVE_LINES);
-	shader.end();
 	raytracing.begin();
 
 	raytracing.setUniform1i("uWidth", kinect.getBodyIndexSource()->getWidth());
@@ -472,6 +462,17 @@ void ofApp::draw()
 	raytracing.setUniform1f("lookalike", lookalike);
 	meshWireframe.drawWireframe();
 	raytracing.end();
+	shader.begin();
+	shader.setUniform1i("uWidth", kinect.getBodyIndexSource()->getWidth());
+	shader.setUniform1i("uHeight", kinect.getBodyIndexSource()->getHeight());
+	shader.setUniformTexture("uBodyIndexTex", framebufferMask.getTextureReference(), 1);
+	shader.setUniformTexture("depthTex", depthTexture, 3);
+	shader.setUniform1f("time", ofGetElapsedTimef());
+	shader.setUniformTexture("uColorTex", colorTexture, 2);
+	shader.setUniform1f("lookalike", lookalike);
+	mesh.draw();
+	
+	shader.end();
 	//materialPlane.end();
 	
 	ofPopMatrix();
@@ -480,11 +481,18 @@ void ofApp::draw()
 	framebuffer.end();
 	//ofDisableLighting();
 	framebuffer.draw(0, 0);
+	contours.begin();
+	ofPushMatrix();
+	ofTranslate(1280, 0);
+	contours.setUniform1f("lookalike", lookalike);
+	texture.draw(0, 0, -1280, 1024);
+	ofPopMatrix();
+	contours.end();
 	framebuffer.draw(1280, 0);
 	
 	framebuffer.begin();
 	ofFill();
-	ofSetColor(0, 0, 0, 10 + 20 * lookalike);
+	ofSetColor(0, 0, 0, 20 + 40 * lookalike);
 	ofDrawRectangle(0, 0, 1280, 1024);
 	framebuffer.end();
 	maxBuffer = 0;

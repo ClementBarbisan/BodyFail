@@ -35,6 +35,8 @@ float EaseInOut(float t)
 void main()
 {
 	vKeep = vertex[0].vKeep == 1.0 ? vertex[1].vKeep : 0.0;
+	if (distance(gl_in[0].gl_Position,gl_in[1].gl_Position) < 0.2)
+		vKeep = 0.0;
 	if (vKeep == 0.0)
 		return;
 	float value = EaseInOut(lookalike);

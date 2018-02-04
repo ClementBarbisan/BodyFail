@@ -42,6 +42,7 @@ class ofApp : public ofBaseApp{
 		ofEasyCam cam;
 		ofShader shader;
 		ofShader raytracing;
+		ofShader contours;
 		vector<string> coordinates = vector<string>(200);
 		ofLight	light;
 		ofPlanePrimitive plane;
@@ -65,7 +66,7 @@ class ofApp : public ofBaseApp{
 		ofxOscReceiver oscReceiver;
 		ofxOscSender oscSender;
 		ofxOscMessage oscMessage;
-		//default_random_engine rng;
+		default_random_engine rng;
 		//ofxFontStash2::Fonts font;
 		ofTrueTypeFont trueTypeFont;
 		bool savedPosture = false;
