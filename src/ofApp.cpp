@@ -63,8 +63,8 @@ void ofApp::setupGui()
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-	if (!MACHINELEARNING)
-		startProcess();
+	/*if (!MACHINELEARNING)
+		startProcess();*/
 	kinect.open();
 	kinect.initDepthSource();
 	kinect.initColorSource();
@@ -72,7 +72,7 @@ void ofApp::setup(){
 	kinect.initBodyIndexSource();
 	shader.load("bodyIndex.vert", "bodyIndex.frag", "bodyIndex.geom");
 	raytracing.load("raytracer.vert", "raytracer.frag", "raytracer.geom");
-	contours.load("contours");
+	//contours.load("contours");
 	rng = default_random_engine{};
 	trueTypeFont.loadFont("backFont.ttf", 12);
 	
@@ -422,12 +422,6 @@ void ofApp::draw()
 	savedPosture = false;
 	ofDisableDepthTest();
 	ofTexture & texture = kinect.getBodyIndexSource()->getTexture();
-	framebufferMask.begin();
-	ofEnableAlphaBlending();
-	ofSetColor(255, 255, 255, 5);
-	texture.draw(0, 0);
-	ofDisableAlphaBlending();
-	framebufferMask.end();
 	framebuffer.begin();	
 	cam.begin();
 	cam.setPosition(0.0, 0.0, 0.0);
@@ -465,7 +459,7 @@ void ofApp::draw()
 	shader.begin();
 	shader.setUniform1i("uWidth", kinect.getBodyIndexSource()->getWidth());
 	shader.setUniform1i("uHeight", kinect.getBodyIndexSource()->getHeight());
-	shader.setUniformTexture("uBodyIndexTex", framebufferMask.getTextureReference(), 1);
+	shader.setUniformTexture("uBodyIndexTex", texture, 1);
 	shader.setUniformTexture("depthTex", depthTexture, 3);
 	shader.setUniform1f("time", ofGetElapsedTimef());
 	shader.setUniformTexture("uColorTex", colorTexture, 2);
@@ -481,13 +475,13 @@ void ofApp::draw()
 	framebuffer.end();
 	//ofDisableLighting();
 	framebuffer.draw(0, 0);
-	contours.begin();
+	/*contours.begin();
 	ofPushMatrix();
 	ofTranslate(1280, 0);
 	contours.setUniform1f("lookalike", lookalike);
 	texture.draw(0, 0, -1280, 1024);
 	ofPopMatrix();
-	contours.end();
+	contours.end();*/
 	framebuffer.draw(1280, 0);
 	
 	framebuffer.begin();
@@ -500,20 +494,23 @@ void ofApp::draw()
 	{
 		rotate(coordinates.begin(), coordinates.begin() + 25, coordinates.end());
 		auto bodies = kinect.getBodySource()->getBodies();
-		if (bodies.size() == 0)
+		if (!MACHINELEARNING)
 		{
-			killProcess();
-			startProcess();
-			timeElapsedSinceBug = 0;
-		}
-		else
-		{
-			timeElapsedSinceBug += ofGetLastFrameTime();
-			if (timeElapsedSinceBug > TIMETORESET)
+			if (bodies.size() == 0)
 			{
 				killProcess();
 				startProcess();
 				timeElapsedSinceBug = 0;
+			}
+			else
+			{
+				timeElapsedSinceBug += ofGetLastFrameTime();
+				if (timeElapsedSinceBug > TIMETORESET)
+				{
+					killProcess();
+					startProcess();
+					timeElapsedSinceBug = 0;
+				}
 			}
 		}
 		
@@ -521,7 +518,7 @@ void ofApp::draw()
 		{
 			if (body.joints.size() == 25)
 			{
-				if (originalLookalike == oldOriginalLookalike)
+				if (originalLookalike == oldOriginalLookalike && !MACHINELEARNING)
 				{
 					indexStaySame++;
 					if (indexStaySame > 1000)

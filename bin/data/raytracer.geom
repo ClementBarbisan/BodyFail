@@ -13,6 +13,7 @@ in Vertex
 {
 	vec2 vTexCoord;
 	float vKeep;
+	int id;
 } vertex[];
 
 out float vKeep;
@@ -40,11 +41,12 @@ void main()
 	if (vKeep == 0.0)
 		return;
 	float value = EaseInOut(lookalike);
-	vec4 pos = vec4((-0.5 + rand(gl_in[0].gl_Position.x, time)) / (30.0 * value), (-0.5 + rand(gl_in[0].gl_Position.y, time)) / (30.0 * value), (-0.5 + rand(gl_in[0].gl_Position.z, time)) / (30.0 * value), 1.0);Position_worldspace = modelViewMatrix * (gl_in[0].gl_Position + pos);
+	float computeTime = time * (2 + 2 * (1.0 - value));
+	vec4 pos = vec4(sin(computeTime + gl_in[0].gl_Position.z + vertex[0].id) * cos(computeTime + gl_in[0].gl_Position.y +  vertex[0].id) / (50.0 * (value)), sin(computeTime + gl_in[0].gl_Position.x +  vertex[0].id) * sin(computeTime + gl_in[0].gl_Position.z +  vertex[0].id) / (50.0 * (value)), sin(computeTime + gl_in[0].gl_Position.x +  vertex[0].id) * cos(computeTime + gl_in[0].gl_Position.y +  vertex[0].id) / (50.0 * (value)), 1.0);
 	vTexCoord = vertex[0].vTexCoord;
 	gl_Position = modelViewProjectionMatrix * (gl_in[0].gl_Position + pos);
 	EmitVertex();
-	pos = vec4((-0.5 + rand(gl_in[0].gl_Position.x, time)) / (30.0 * value), (-0.5 + rand(gl_in[0].gl_Position.y, time)) / (30.0 * value), (-0.5 + rand(gl_in[0].gl_Position.z, time)) / (30.0 * value), 1.0);Position_worldspace = modelViewMatrix * (gl_in[0].gl_Position + pos);
+	pos = vec4(sin(computeTime + gl_in[1].gl_Position.z + vertex[1].id) * cos(computeTime + gl_in[1].gl_Position.y +  vertex[1].id) / (50.0 * (value)), sin(computeTime + gl_in[1].gl_Position.x +  vertex[1].id) * sin(computeTime + gl_in[1].gl_Position.z +  vertex[1].id) / (50.0 * (value)), sin(computeTime + gl_in[1].gl_Position.x +  vertex[1].id) * cos(computeTime + gl_in[1].gl_Position.y +  vertex[1].id) / (50.0 * (value)), 1.0);
 	vTexCoord = vertex[1].vTexCoord;
 	gl_Position = modelViewProjectionMatrix * (gl_in[1].gl_Position + pos);
 	EmitVertex();

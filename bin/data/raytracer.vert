@@ -21,6 +21,7 @@ out Vertex
 {
 	vec2 vTexCoord;
 	float vKeep;
+	int id;
 } vertex;
 
 void main(){
@@ -36,5 +37,6 @@ void main(){
 	{
 		vertex.vKeep = 1.0;
 	}
+	vertex.id = gl_VertexID;
 	vertex.vTexCoord = texcoord;
 }

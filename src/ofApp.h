@@ -3,8 +3,8 @@
 #define USE_PROGRAMMABLE_PIPELINE 1
 #define MANUAL false
 #define NOMULTIPLESCREEN true
-#define FULLSCREEN true
-#define TIMETORESET 30
+#define FULLSCREEN false
+#define TIMETORESET 1800
 #define MACHINELEARNING true
 #define TOTALTIME 5
 
@@ -70,8 +70,8 @@ class ofApp : public ofBaseApp{
 		//ofxFontStash2::Fonts font;
 		ofTrueTypeFont trueTypeFont;
 		bool savedPosture = false;
-		float speedWeight = 0.5;
-		float positionWeight = 1;
+		float speedWeight = 0.75;
+		float positionWeight = 1.5;
 		int maximumValue = 500;
 		int behaviour = 1;
 		float globalWeight = 1;

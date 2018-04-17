@@ -22,6 +22,7 @@ out Vertex
 	vec2 vTexCoord;
 	float vKeep;
 	vec4 idxColor;
+	int id;
 } vertex;
 
 void main()
@@ -34,8 +35,8 @@ void main()
 	vec2 idxTexCoord = vec2(gl_VertexID % uWidth, gl_VertexID / uWidth);
 	vec4 idxColor = texture(uBodyIndexTex, idxTexCoord);
 	vertex.idxColor = idxColor;
-	if (idxColor.r > 0.75)
-//	|| gl_VertexID % int(5 / int(clamp(5 * (1.0 - lookalike), 1, 5))) != 0) 
+	vertex.id = gl_VertexID;
+	if (idxColor.r > 0.75f || gl_VertexID % int(10 / int(clamp(10 * (1.0 - lookalike), 1, 10))) != 0) 
 	{
 		vertex.vKeep = 0.0;
 	}

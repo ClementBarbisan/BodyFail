@@ -22,7 +22,7 @@ out vec4 vFragColor;
 
 void main()
 {
-	if (vKeep == 0.0 || mod(floor(vTexCoord.y * uHeight), 50) != 0) {
+	if (vKeep == 0.0) {
 		discard;
 	}
 
@@ -57,9 +57,9 @@ void main()
 		* LightColor * LightPower / (distance * 2.5) +
 		MaterialSpecularColor * LightColor * LightPower * pow(cosAlpha,5) / (distance * 2.5);
 		
-    vec3 intensity     = vec3 (dot(vFragColor.rgb, LumCoeff));
+    /*vec3 intensity     = vec3 (dot(vFragColor.rgb, LumCoeff));
     vec3 color         = mix(intensity, vFragColor.rgb, vec3(1.0));
     color              = mix(vec3(0.62), color, vec3(3));
-    vFragColor       = vec4 (1.0 * vec3(1.0 - idxColor.x,1.0 - idxColor.y,1.0 - idxColor.z), 1.0);
-	vFragColor       = vec4 (1.0);
+    vFragColor       = vec4 (color, 1.0);*/
+	//vFragColor       = vec4 (1.0);
 }
