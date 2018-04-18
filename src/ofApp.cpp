@@ -246,7 +246,7 @@ void ofApp::update(){
 			for (int i = 0; i < 75; i++)
 			predictVector.pop_back();
 			}*/
-			predictVector.clear();
+			listPredictVector.clear();
 			auto bodies = kinect.getBodySource()->getBodies();
 			for (auto body : bodies) {
 				if (body.joints.size() == 25)
@@ -258,22 +258,26 @@ void ofApp::update(){
 						//ofLog() << joint.first << " " << joint.second.getPosition();
 						//now do something with the joints
 					}
-					break;
+					listPredictVector.push_back(new GRT::VectorFloat(predictVector));
+					predictVector.clear();
 				}
 			}
-			if (predictVector.size() == 75)
+			for (int i = 0; i < listPredictVector.size(); i++)
 			{
-				VectorFloat dataResult;
-				if (pipeline.predict(predictVector))
+				if (listPredictVector[i].size() == 75)
 				{
-					dataResult = pipeline.getRegressionData();
-					if (lookalike < 1)
-						lookalike += ofGetLastFrameTime() * (CLAMP(dataResult[0], 0, 1) / TOTALTIME);
-					if (lookalike > 0)
+					VectorFloat dataResult;
+					if (pipeline.predict(listPredictVector[i]))
 					{
-						lookalike -= ofGetLastFrameTime() * (CLAMP(dataResult[1], 0, 1) / TOTALTIME / 2);
+						dataResult = pipeline.getRegressionData();
+						if (lookalike < 1)
+							lookalike += ofGetLastFrameTime() * (CLAMP(dataResult[0], 0, 1) / TOTALTIME);
+						if (lookalike > 0)
+						{
+							lookalike -= ofGetLastFrameTime() * (CLAMP(dataResult[1], 0, 1) / TOTALTIME / 2);
+						}
+						lookalike = CLAMP(lookalike, 0, 1);
 					}
-					lookalike = CLAMP(lookalike, 0, 1);
 				}
 			}
 	}

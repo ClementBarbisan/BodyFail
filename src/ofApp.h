@@ -86,4 +86,5 @@ class ofApp : public ofBaseApp{
 		float timeElapsedSinceBug = 0;
 		GestureRecognitionPipeline pipeline;
 		GRT::VectorFloat predictVector;
+		std::vector<GRT::VectorFloat> listPredictVector;
 };

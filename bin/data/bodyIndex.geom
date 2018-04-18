@@ -52,7 +52,7 @@ void main()
 	float value = EaseInOut(lookalike);
 	//zPos = sqrt(( modelViewProjectionMatrix * gl_in[0].gl_Position).z) / 20.0;
 	float computeTime = time * (2 + 2 * (1.0 - value));
-	vec4 pos = vec4(sin(computeTime + gl_in[0].gl_Position.z + vertex[0].id) * cos(computeTime + gl_in[0].gl_Position.y +  vertex[0].id) / (50.0 * (value)), sin(computeTime + gl_in[0].gl_Position.x +  vertex[0].id) * sin(computeTime + gl_in[0].gl_Position.z +  vertex[0].id) / (50.0 * (value)), sin(computeTime + gl_in[0].gl_Position.x +  vertex[0].id) * cos(computeTime + gl_in[0].gl_Position.y +  vertex[0].id) / (50.0 * (value)), 1.0);
+	vec4 pos = vec4(sin(computeTime + gl_in[0].gl_Position.z + vertex[0].id) * cos(computeTime + gl_in[0].gl_Position.y +  vertex[0].id) * 1.25 / (50.0 * (value)), sin(computeTime + gl_in[0].gl_Position.x +  vertex[0].id) * sin(computeTime + gl_in[0].gl_Position.z +  vertex[0].id) * 1.25 / (50.0 * (value)), sin(computeTime + gl_in[0].gl_Position.x +  vertex[0].id) * cos(computeTime + gl_in[0].gl_Position.y +  vertex[0].id)  * 1.25 / (50.0 * (value)), 1.0);
 	Position_worldspace = modelViewMatrix * (gl_in[0].gl_Position + pos);
 	vec4 zRand = vec4(((-1.0 + rand((gl_in[0].gl_Position+vec4(size,size / 2,size / 2,0.0)).x, time)) / 10.0) * (1.0 - value),((-1.0 + rand((gl_in[0].gl_Position+vec4(size,size / 2,size / 2,0.0)).y, time)) / 10.0) * (1.0 - value),((-1 + rand((gl_in[0].gl_Position+vec4(size,size / 2,size / 2,0.0)).z, time)) / 10.0) * (1.0 - value),1.0);
 	vec4 normalExp = vec4(0.0);
