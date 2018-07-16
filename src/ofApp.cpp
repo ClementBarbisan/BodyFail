@@ -258,7 +258,7 @@ void ofApp::update(){
 						//ofLog() << joint.first << " " << joint.second.getPosition();
 						//now do something with the joints
 					}
-					listPredictVector.push_back(new GRT::VectorFloat(predictVector));
+					listPredictVector.push_back(predictVector);
 					predictVector.clear();
 				}
 			}

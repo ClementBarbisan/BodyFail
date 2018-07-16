@@ -181,3 +181,4 @@ bin/BodyFail.iobj
 bin/BodyFail.exp
 bin/BodyFail.exe
 obj/
+.vs/
